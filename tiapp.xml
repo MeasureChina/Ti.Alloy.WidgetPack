@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
+	<id>com.tripvi.ti.widgets</id>
+	<name>Ti.WidgetPack</name>
+	<version>1.0.0</version>
+	<publisher>Tripvi Inc.</publisher>
+	<url>http://tripvi.com</url>
+	<description>not specified</description>
+	<copyright>2013 by tripvi</copyright>
+	<icon>appicon.png</icon>
+	<persistent-wifi>false</persistent-wifi>
+	<prerendered-icon>false</prerendered-icon>
+	<statusbar-style>default</statusbar-style>
+	<statusbar-hidden>false</statusbar-hidden>
+	<fullscreen>false</fullscreen>
+	<navbar-hidden>false</navbar-hidden>
+	<analytics>false</analytics>
+	<guid>3009132f-4e0e-4014-85b7-84a5dac7ef85</guid>
+	<property name="ti.ui.defaultunit" type="string">dp</property>
+	<iphone>
+		<orientations device="iphone">
+			<orientation>Ti.UI.PORTRAIT</orientation>
+		</orientations>
+		<orientations device="ipad">
+			<orientation>Ti.UI.PORTRAIT</orientation>
+			<orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>
+			<orientation>Ti.UI.LANDSCAPE_LEFT</orientation>
+			<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
+		</orientations>
+	</iphone>
+	<android xmlns:android="http://schemas.android.com/apk/res/android">
+		<tool-api-level>16</tool-api-level>
+		<manifest android:versionCode="100" android:versionName="1.0.0">
+			<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="11" />
+		</manifest>
+	</android>
+	<mobileweb>
+		<precache>
+		</precache>
+		<splash>
+			<enabled>true</enabled>
+			<inline-css-images>true</inline-css-images>
+		</splash>
+		<theme>default</theme>
+	</mobileweb>
+	<modules>
+		<module platform="android">com.tripvi.drawerlayout</module>
+	</modules>
+	<deployment-targets>
+		<target device="android">true</target>
+		<target device="ipad">false</target>
+		<target device="iphone">false</target>
+		<target device="mobileweb">false</target>
+		<target device="tizen">false</target>
+	</deployment-targets>
+	<sdk-version>3.1.3.v20130909000000</sdk-version>
+	<plugins>
+		<plugin version="1.2.2">ti.alloy</plugin>
+	</plugins>
+</ti:app>

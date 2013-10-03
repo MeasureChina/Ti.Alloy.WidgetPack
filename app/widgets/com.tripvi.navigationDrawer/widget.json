@@ -1,0 +1,13 @@
+{
+	"id": "com.tripvi.navigationDrawer",
+	"name": "com.tripvi.navigationDrawer",
+	"description" : "",
+	"author": "metacortex",
+	"version": "1.0",
+	"copyright":"Copyright (c) 2013 Tripvi Inc.",
+	"license":"Public Domain",
+	"min-alloy-version": "1.2",
+	"min-titanium-version":"3.1.0",
+	"tags":"",
+	"platforms":"android"
+}

@@ -10,6 +10,7 @@ actionBar.init($.index, {
 		{
 			title: "Search",
 			icon: "/appicon.png",
+			type: "searchview",
 		},
 		{
 			title: "New Item",

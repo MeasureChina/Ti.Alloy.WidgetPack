@@ -9,7 +9,6 @@
 			<View id="title" />
 		</View>
 		<View id="tab" />
-		<View id="actionView" />
 		<View id="actionButtons" />
 		<!-- <View id="border" /> -->
 	</View>

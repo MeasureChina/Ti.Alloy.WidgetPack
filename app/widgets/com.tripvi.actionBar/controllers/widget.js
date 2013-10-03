@@ -289,8 +289,6 @@ exports.makeActionItems = function(items) {
 				left: 4,
 			});
 			
-			// TODO: search button
-			
 			if (item.callback) {
 				button.addEventListener('click', item.callback);
 			}
@@ -312,6 +310,7 @@ exports.makeActionItems = function(items) {
 		var button = Ti.UI.createView({
 			width: 49,
 			height: 48,
+			_more: "more",
 		});
 		
 		var buttonIcon = Ti.UI.createImageView({

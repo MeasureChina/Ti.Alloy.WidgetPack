@@ -219,6 +219,8 @@ exports.setTitle = function(title) {
 exports.getTitle = function() {
 	if ($._hasTitleLabel && $._titleLabel) {
 		return $._titleLabel.text;
+	} else {
+		return $.title.children[0];
 	}
 }
 
@@ -289,11 +291,15 @@ exports.makeActionItems = function(items) {
 		if (item.showAsAction == Ti.Android.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW) {
 			more.push(item);
 		} else {
+			var width = item.icon_width || 32;
+			var height = item.icon_height || 32;
+			
 			var button = Ti.UI.createButton({
-				backgroundImage: item.icon,
-				width: item.icon_width || 32,
-				height: item.icon_height || 32,
+				top: (48 - height)/2,
 				left: 4,
+				width: width,
+				height: height,
+				backgroundImage: item.icon,
 			});
 			
 			if (item.callback) {
@@ -446,8 +452,12 @@ exports.makeActionItems = function(items) {
 		}
 		
 		$.actionButtons.add(button);
-		
 		$._menus.push(button);
+	} else {
+		// right padding이 필요함
+		if ($._menus.length > 0) {
+			$._menus[$._menus.length - 1].right = 8;
+		}
 	}
 }
 
@@ -461,6 +471,13 @@ exports.releaseActionItems = function() {
 	$._menus = [];
 }
 
+exports.showActionItems = function() {
+	$.actionButtons.visible = true;
+}
+
+exports.hideActionItems = function() {
+	$.actionButtons.visible = false;
+}
 
 
 

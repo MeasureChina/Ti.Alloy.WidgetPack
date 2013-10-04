@@ -149,7 +149,9 @@ exports.init = function(window, options) {
 						if (OS_ANDROID) {
 							// android는 window를 중첩시킬수없으므로, 첫번째 child view를 wrapper로 간주하고 사용한다.
 							// 따라서 menu로 사용되는 controller에서는 필요한 컨텐츠가 전부 첫번째 child view에 담겨있어야 한다.
+							var window_options = v._options;
 							v = v.children[0];
+							v._options = window_options;
 						}
 						
 						v.top = 0;
@@ -164,6 +166,7 @@ exports.init = function(window, options) {
 						// menu가 변경될때 resource 해제해야함
 						row._releaseResources = function() {
 							row._releaseResources = undefined;
+							row._view._options = undefined;
 							row._view = undefined;
 						}
 						

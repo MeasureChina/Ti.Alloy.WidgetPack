@@ -1,7 +1,4 @@
 <Alloy>
 	<Window id="win" title="Index" exitOnClose="true">
-		<View id="container">
-			<Label id="label">Hello, World</Label>
-		</View>
 	</Window>
 </Alloy>

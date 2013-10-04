@@ -1,0 +1,7 @@
+<Alloy>
+	<Window id="win">
+		<View id="container">
+			<Label>Page 3</Label>
+		</View>
+	</Window>
+</Alloy>

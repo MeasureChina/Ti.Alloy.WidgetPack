@@ -1,4 +1,3 @@
 <Alloy>
-	<!-- <View /> -->
 	<Module id="drawer" module="com.tripvi.drawerlayout" method="createDrawer" platform="android" />
 </Alloy>

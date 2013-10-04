@@ -9,20 +9,20 @@ drawer.init($.win, {
 					name: 'setting_about',
 					title: "Bookmill",
 					icon: '/appicon.png',
-					window: 'index',
+					window: 'page1',
 				},
 				{
 					name: 'home',
 					title: "Home",
 					icon: '/appicon.png',
-					window: 'index',
+					window: 'page2',
 					selectedColor: "#844c96",
 				},
 				{
 					name: 'person_index',
 					title: "명사의 서재",
 					icon: '/appicon.png',
-					window: 'index',
+					window: 'page3',
 					selectedColor: "#844c96",
 				},
 			],
@@ -64,5 +64,7 @@ actionBar.init($.win, {
 		},
 	],
 });
+
+
 
 $.win.open();

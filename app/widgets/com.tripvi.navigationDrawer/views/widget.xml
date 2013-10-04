@@ -1,3 +1,4 @@
 <Alloy>
-	<Label>I'm the default widget</Label>
+	<!-- <View /> -->
+	<Module id="drawer" module="com.tripvi.drawerlayout" method="createDrawer" platform="android" />
 </Alloy>

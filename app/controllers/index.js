@@ -1,9 +1,37 @@
-function doClick(e) {
-    alert($.label.text);
-}
+var drawer = Alloy.createWidget("com.tripvi.navigationDrawer");
+drawer.init($.win, {
+	navigation: [
+		{
+			section: 'default',
+			title: null, // no header view
+			items: [
+				{
+					name: 'setting_about',
+					title: "Bookmill",
+					icon: '/appicon.png',
+					window: 'index',
+				},
+				{
+					name: 'home',
+					title: "Home",
+					icon: '/appicon.png',
+					window: 'index',
+					selectedColor: "#844c96",
+				},
+				{
+					name: 'person_index',
+					title: "명사의 서재",
+					icon: '/appicon.png',
+					window: 'index',
+					selectedColor: "#844c96",
+				},
+			],
+		},
+	]
+});
 
 var actionBar = Alloy.createWidget("com.tripvi.actionBar");
-actionBar.init($.index, {
+actionBar.init($.win, {
 	rootWindow: true,
 	useDrawerMenu: true,
 	menu: [
@@ -37,4 +65,4 @@ actionBar.init($.index, {
 	],
 });
 
-$.index.open();
+$.win.open();

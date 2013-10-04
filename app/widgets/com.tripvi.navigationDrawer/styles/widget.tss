@@ -1,9 +1,6 @@
-"Label": {
-	color: '#000',
-	font: {
-		fontSize: 18,
-		fontWeight: 'bold'
-	},
-	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+"#drawer": {
+	top: "48dp",
+	leftDrawerWidth: "240dp",
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
 }

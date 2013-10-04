@@ -211,32 +211,39 @@ exports.setTitle = function(title) {
 		makeTitleLabel(title);
 	} else if (title) {
 		// view인 경우
-		$.title.removeAllChildren();
+		removeTitle();
 		$.title.add(title);
 	}
 }
 
+exports.getTitle = function() {
+	if ($._hasTitleLabel && $._titleLabel) {
+		return $._titleLabel.text;
+	}
+}
+
 function makeTitleLabel(title) {
-	if ($._hasTitleLabel) {
-		$.title.removeAllChildren();
+	if (!$._hasTitleLabel) {
+		$._titleLabel = Ti.UI.createLabel({
+			text: title,
+			font: { fontSize: "21" },
+			color: '#fff',
+			width: Ti.UI.SIZE,
+			ellipsize: true,
+			wordWrap: false,
+			textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
+		});
+		$.title.add($._titleLabel);
 	}
 	
-	var titleLabel = Ti.UI.createLabel({
-		text: title,
-		font: { fontSize: "21" },
-		color: '#fff',
-		width: Ti.UI.SIZE,
-		ellipsize: true,
-		wordWrap: false,
-		textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
-	});
-	$.title.add(titleLabel);
-	
+	$._titleLabel.text = title;
 	$._hasTitleLabel = true;
 }
 
 function removeTitle() {
 	$.title.removeAllChildren();
+	$._hasTitleLabel = false;
+	$._titleLabel = undefined;
 }
 
 
@@ -258,7 +265,7 @@ exports.makeAsRoot = function(isRoot) {
 }
 
 exports.onDrawerSlide = function(offset) {
-	var v = (offset * offset) * -10;
+	var v = (offset * offset) * -5;
 	$.drawerIcon.left = v;
 }
 
@@ -487,6 +494,9 @@ exports.release = function() {
 	$._menu = undefined;
 	$._tabOptions = undefined;
 	$._tabs	= undefined;
+	
+	$._titleLabel = undefined;
+	
 	
 	//
 	if (Alloy.Globals.releaseController) Alloy.Globals.releaseController($);

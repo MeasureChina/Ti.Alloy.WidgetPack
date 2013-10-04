@@ -244,6 +244,22 @@ function setContentView(v) {
 
 
 /**
+ *	Drawer Action
+ *
+ */
+exports.toggleLeftDrawer = function() {
+	$.drawer.toggleLeftWindow();
+}
+exports.openLeftDrawer = function() {
+	$.drawer.openLeftWindow();
+}
+exports.closeLeftDrawer = function() {
+	$.drawer.closeLeftWindow();
+}
+
+
+
+/**
  *	Menu accessor & updater
  *
  */
@@ -275,6 +291,23 @@ exports.closeMenu = function() {
 
 
 
+
+/**
+ *	Event Handlers
+ *
+ */
+function onOpenDrawer(e) {
+	$.trigger("open");
+}
+function onCloseDrawer(e) {
+	$.trigger("close");
+}
+function onDrawerslide(e) {
+	$.trigger("drawerslide", e);
+}
+
+
+
 /**
  *	Release
  *
@@ -285,8 +318,12 @@ exports.release = function() {
 	// 재사용을 위해서는 uninit()를 사용한다.
 	if (!$) return;
 	Ti.API.info("com.tripvi.navigationDrawer released <<<");
+	
 
-
+	// remove all event listeners
+	drawer.off();
+	
+	
 	var rows = _.values($._menuIndex);
 	// 모든 resources 삭제
 	_.each(rows, function(row) {

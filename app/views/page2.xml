@@ -1,5 +1,5 @@
 <Alloy>
-	<Window id="win">
+	<Window id="win" title="Two">
 		<View id="container">
 			<Label>Page 2</Label>
 		</View>

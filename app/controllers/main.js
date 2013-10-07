@@ -54,14 +54,14 @@ drawer.on('menuselect', function(e) {
 		$._lastWindowTitle = e.title;
 	}
 });
-drawer.on('open', function(e) {
+drawer.on('draweropen', function(e) {
 	// actionbar title 변경
 	$._lastWindowTitle = $._lastWindowTitle || actionBar.getTitle();
 	actionBar.setTitle("MENU");
 	// actions 감추기
 	actionBar.hideActionItems();
 });
-drawer.on('close', function(e) {
+drawer.on('drawerclose', function(e) {
 	// actionbar title 복구
 	actionBar.setTitle($._lastWindowTitle || $.win.title);
 	$._lastWindowTitle = undefined;

@@ -300,10 +300,10 @@ exports.closeMenu = function() {
  *
  */
 function onOpenDrawer(e) {
-	$.trigger("open");
+	$.trigger("draweropen");
 }
 function onCloseDrawer(e) {
-	$.trigger("close");
+	$.trigger("drawerclose");
 }
 function onDrawerslide(e) {
 	$.trigger("drawerslide", e);
@@ -324,8 +324,9 @@ exports.release = function() {
 	
 
 	// remove all event listeners
-	$.drawer.off();
-	
+	$.drawer.removeEventListener("draweropen", onOpenDrawer);
+	$.drawer.removeEventListener("drawerclose", onCloseDrawer);
+	$.drawer.removeEventListener("drawerslide", onDrawerslide);
 	
 	var rows = _.values($._menuIndex);
 	// 모든 resources 삭제

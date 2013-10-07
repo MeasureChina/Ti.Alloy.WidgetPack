@@ -1,3 +1,3 @@
 <Alloy>
-	<Module id="drawer" module="com.tripvi.drawerlayout" method="createDrawer" onOpen="onOpenDrawer" onClose="onCloseDrawer" onDrawerslide="onDrawerslide" />
+	<Module id="drawer" module="com.tripvi.drawerlayout" method="createDrawer" onDraweropen="onOpenDrawer" onDrawerclose="onCloseDrawer" onDrawerslide="onDrawerslide" />
 </Alloy>

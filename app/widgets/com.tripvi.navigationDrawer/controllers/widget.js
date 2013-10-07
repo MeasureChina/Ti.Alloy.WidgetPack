@@ -299,13 +299,12 @@ exports.closeMenu = function() {
  *	Event Handlers
  *
  */
-function onOpenDrawer(e) {	
-	e.cancelBubble = true;
-	$.trigger("open", e);
+
+function onOpenDrawer(e) {
+	$.trigger("draweropen");
 }
 function onCloseDrawer(e) {
-	e.cancelBubble = true;
-	$.trigger("close", e);
+	$.trigger("drawerclose");
 }
 function onDrawerslide(e) {
 	e.cancelBubble = true;
@@ -327,8 +326,9 @@ exports.release = function() {
 	
 
 	// remove all event listeners
-	$.drawer.off();
-	
+	$.drawer.removeEventListener("draweropen", onOpenDrawer);
+	$.drawer.removeEventListener("drawerclose", onCloseDrawer);
+	$.drawer.removeEventListener("drawerslide", onDrawerslide);
 	
 	var rows = _.values($._menuIndex);
 	// 모든 resources 삭제

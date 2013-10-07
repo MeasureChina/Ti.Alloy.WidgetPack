@@ -324,7 +324,7 @@ exports.release = function() {
 	
 
 	// remove all event listeners
-	drawer.off();
+	$.drawer.off();
 	
 	
 	var rows = _.values($._menuIndex);

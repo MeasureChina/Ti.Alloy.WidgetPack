@@ -212,6 +212,7 @@ exports.setTitle = function(title) {
 	} else if (title) {
 		// view인 경우
 		removeTitle();
+		// TODO: $.widget.add(...);
 		$.title.add(title);
 	}
 }
@@ -220,6 +221,7 @@ exports.getTitle = function() {
 	if ($._hasTitleLabel && $._titleLabel) {
 		return $._titleLabel.text;
 	} else {
+		// TODO: $._title
 		return $.title.children[0];
 	}
 }
@@ -243,6 +245,7 @@ function makeTitleLabel(title) {
 }
 
 function removeTitle() {
+	// TODO: $.widget.remove(...);
 	$.title.removeAllChildren();
 	$._hasTitleLabel = false;
 	$._titleLabel = undefined;

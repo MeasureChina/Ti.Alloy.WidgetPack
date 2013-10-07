@@ -64,7 +64,8 @@ function closeTopMostWindow() {
 ***********************************************/
 exports.openMainWindow = function(options) {
 	$._mainController = Alloy.createController('main');
-	Alloy.Globals.openWindow($._mainController.getView(), options);
+	// Alloy.Globals.openWindow($._mainController.getView(), options);
+	$._mainController.getView().open({ animated: false });
 	
 	$._mainController.on('exit', function() {
 		// exit 이벤트가 떨어지면 App 종료

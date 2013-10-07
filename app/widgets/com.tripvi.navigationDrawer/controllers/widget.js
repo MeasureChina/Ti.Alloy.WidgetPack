@@ -299,13 +299,16 @@ exports.closeMenu = function() {
  *	Event Handlers
  *
  */
-function onOpenDrawer(e) {
-	$.trigger("open");
+function onOpenDrawer(e) {	
+	e.cancelBubble = true;
+	$.trigger("open", e);
 }
 function onCloseDrawer(e) {
-	$.trigger("close");
+	e.cancelBubble = true;
+	$.trigger("close", e);
 }
 function onDrawerslide(e) {
+	e.cancelBubble = true;
 	$.trigger("drawerslide", e);
 }
 
@@ -324,7 +327,7 @@ exports.release = function() {
 	
 
 	// remove all event listeners
-	drawer.off();
+	$.off();
 	
 	
 	var rows = _.values($._menuIndex);

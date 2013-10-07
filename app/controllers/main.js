@@ -86,13 +86,17 @@ $.win.addEventListener("actionbarhome", function() {
 
 
 function onOpenWindow(e) {
+	console.log("OPEN");
 	// default menu
 	drawer.openMenuByName('setting_about');
 }
 function onCloseWindow(e) {
+	
+	console.log("on close window");
+	
 	$.win.removeEventListener('androidback', onAndroidBack);
-	$.win.removeEventListener('open', onOpenWindow);
-	$.win.removeEventListener('close', onCloseWindow);
+	// $.win.removeEventListener('open', onOpenWindow);
+	// $.win.removeEventListener('close', onCloseWindow);
 }
 function onAndroidBack(e) {
 	$.win.close();
@@ -104,5 +108,3 @@ $.win.addEventListener('close', onCloseWindow);
 
 
 Alloy.Globals.app = drawer;
-
-$.win.open({ animated: false });

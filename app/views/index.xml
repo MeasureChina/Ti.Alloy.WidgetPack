@@ -1,4 +1,3 @@
 <Alloy>
-	<Window id="win" title="Index" exitOnClose="true">
-	</Window>
+	<Window id="win" exitOnClose="true" />
 </Alloy>

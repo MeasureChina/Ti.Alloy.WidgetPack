@@ -72,9 +72,14 @@ drawer.on('drawerslide', function(e) {
 	actionBar.onDrawerSlide(e.offset);
 });
 
+Alloy.Globals.app = drawer;
+
 
 var actionBar = Alloy.createWidget("com.tripvi.actionBar");
-actionBar.init($.win);
+actionBar.init($.win, {
+	rootWindow: true,
+	useDrawerMenu: true,
+});
 
 
 $.win.addEventListener("actionbarhome", function() {
@@ -83,7 +88,8 @@ $.win.addEventListener("actionbarhome", function() {
 
 
 function onOpenWindow(e) {
-	
+	// default menu
+	drawer.openMenuByName('setting_about');
 }
 function onCloseWindow(e) {
 	$.win.removeEventListener('androidback', onAndroidBack);
@@ -100,4 +106,4 @@ $.win.addEventListener('close', onCloseWindow);
 
 
 
-$.win.open();
+$.win.open({ animated: false });

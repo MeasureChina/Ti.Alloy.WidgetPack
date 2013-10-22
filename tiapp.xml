@@ -44,6 +44,7 @@
 	</mobileweb>
 	<modules>
 		<module platform="android">com.tripvi.drawerlayout</module>
+		<module platform="android">com.tripvi.mediaquery</module>
 	</modules>
 	<deployment-targets>
 		<target device="android">true</target>

@@ -4,7 +4,7 @@ function getPhotos() {
 	
 	var AndroidMediaQuery = require('com.tripvi.mediaquery');
 	
-	var photos = AndroidMediaQuery.queryPhotosByOneDate("2013-08-26");
+	var photos = AndroidMediaQuery.queryPhotosByOneDate(new Date("2013-08-26"));
 	var rows = [];
 	
 	for (var i in photos) {

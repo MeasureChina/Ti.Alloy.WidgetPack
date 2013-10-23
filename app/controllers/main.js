@@ -35,11 +35,32 @@ drawer.init($.win, {
 					},
 				},
 				{
-					name: 'photo_picker',
-					title: "Photo Picker",
+					name: 'photo_picker_single',
+					title: "Photo Picker (single)",
 					icon: '/appicon.png',
 					onClick: function() {
-						var c = Alloy.createController("photo_picker");
+						
+						var options = {
+							mode: "single",
+							remember_list_album: false,
+						}
+						
+						var c = Alloy.createController("photo_picker", options);
+						Alloy.Globals.openWindow(c.getView());
+					},
+				},
+				{
+					name: 'photo_picker_multi',
+					title: "Photo Picker(multi)",
+					icon: '/appicon.png',
+					onClick: function() {
+						
+						var options = {
+							mode: "multiple",
+							remember_list_album: true,
+						}
+						
+						var c = Alloy.createController("photo_picker", options);
 						Alloy.Globals.openWindow(c.getView());
 					},
 				}

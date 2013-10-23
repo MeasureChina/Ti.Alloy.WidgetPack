@@ -1,0 +1,46 @@
+//
+".photos": {
+	height: 80,
+	layout: "horizontal"
+}
+
+".photoWrapper": {
+	left: 8,
+	width: 70, height: 70,
+	backgroundColor: "#f00",
+}
+
+".photo": {
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+}
+
+".check": {
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	borderColor: "#ff0",
+	borderWidth: 5,
+/*	visible: false,*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+".sectionWrapper": {
+	height: 40,
+}
+
+".dateTaken": {
+	
+}

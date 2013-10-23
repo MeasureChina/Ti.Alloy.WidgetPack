@@ -69,7 +69,7 @@ exports.pxToDP = function (val) {
 function resizeView(view, options) {
 	if (WIDTH_DP_RATIO == 1) return;
 	
-	_.each(['width', 'height'], function(attr) {
+	_.each(['width', 'height', 'borderWidth'], function(attr) {
 		if (_.isNumber(view[attr])) {
 			view[attr] = exports.resized_value( view[attr] );
 		}
@@ -92,7 +92,7 @@ function resizeView(view, options) {
 
 function resizeListTemplate(template) {
 	// properties 조정
-	resizeView(template.properties, { width: true, height: true, top: true, left: true, right: true, bottom: true, font: true });
+	resizeView(template.properties, { width: true, height: true, top: true, left: true, right: true, bottom: true, font: true, borderWidth: true });
 	
 	// childTemplates에 대해
 	if (_.isArray(template.childTemplates)) {
@@ -133,7 +133,7 @@ exports.make_layout_fit = function(controller, options) {
 				case 'all':
 					break;
 				default:
-					resizeView(view, { width: true, height: true, top: true, left: true, right: true, bottom: true, font: true });
+					resizeView(view, { width: true, height: true, top: true, left: true, right: true, bottom: true, font: true, borderWidth: true });
 			}
 		});
 
@@ -146,3 +146,101 @@ exports.make_layout_fit = function(controller, options) {
 		
 	}
 }
+
+
+/***********************************************
+  Image: content mode
+***********************************************/
+exports.fill_to_container = function(container, preview) {
+	var arContainer = container.width / container.height;
+	var arPreview = preview.width / preview.height;
+	
+	// Ti.API.info("fill > arPreview : arContainer = " + arPreview + " : " + arContainer);
+	
+	if (arContainer > arPreview) {
+		// container is 'wider' than preview
+		preview.width = container.width;
+		preview.height = preview.width / arPreview;
+
+		preview.top = (preview.height - container.height) / 2 * -1;
+		preview.left = 0;
+	}
+	else{
+		// container is 'taller' than preview
+		preview.height = container.height;
+		preview.width = preview.height * arPreview;
+
+		preview.top = 0;
+		preview.left = (preview.width - container.width) / 2 * -1;
+	}
+}
+
+exports.fill_width_to_container = function(container, preview) {
+	var arContainer = container.width / container.height;
+	var arPreview = preview.width / preview.height;
+	
+	// Ti.API.info("fill_width > arPreview : arContainer = " + arPreview + " : " + arContainer);
+
+	preview.width = container.width;
+	preview.height = preview.width / arPreview;
+
+	preview.top = (preview.height - container.height) / 2 * -1;
+	preview.left = 0;
+}
+
+exports.fit_to_container = function(container, preview) {
+	var arContainer = container.width / container.height;
+	var arPreview = preview.width / preview.height;
+	
+	// Ti.API.info("fit > arPreview : arContainer = " + arPreview + " : " + arContainer);
+
+	if (arContainer > arPreview) {
+		// container is 'wider' than preview
+		preview.height = container.height;
+		preview.width = preview.height * arPreview;
+
+		preview.top = 0;
+		preview.left = (preview.width - container.width) / 2 * -1;
+	}
+	else{
+		// container is 'taller' than preview
+		preview.width = container.width;
+		preview.height = preview.width / arPreview;
+
+		preview.top = (preview.height - container.height) / 2 * -1;
+		preview.left = 0;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

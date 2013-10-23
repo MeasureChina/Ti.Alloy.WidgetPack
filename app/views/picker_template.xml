@@ -1,0 +1,28 @@
+<Alloy>
+	<ItemTemplate name="photos" class="photosTemplate">		
+		<View class="photos">
+			<View class="photoWrapper" bindId="photoWrapper1" >
+				<ImageView class="photo" bindId="photo1" />
+				<View class="check" bindId="check1" />
+			</View>
+			<View class="photoWrapper" bindId="photoWrapper2" >
+				<ImageView class="photo" bindId="photo2" />
+				<View class="check" bindId="check2" />
+			</View>
+			<View class="photoWrapper" bindId="photoWrapper3" >
+				<ImageView class="photo" bindId="photo3" />
+				<View class="check" bindId="check3" />
+			</View>
+			<View class="photoWrapper" bindId="photoWrapper4" >
+				<ImageView class="photo" bindId="photo4" />
+				<View class="check" bindId="check4" />
+			</View>
+		</View>
+	</ItemTemplate>
+	
+	<ItemTemplate name="section" class="sectionTemplate">		
+		<View class="sectionWrapper">
+			<Label class="dateTaken" bindId="dateTaken" />
+		</View>
+	</ItemTemplate>
+</Alloy>

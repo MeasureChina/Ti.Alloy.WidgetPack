@@ -2,19 +2,22 @@
   backgroundColor: "#fff"
 }
 
+//
 "#bar": {
 	top: 0,
 	height: "48", width: Ti.UI.FILL,
 	backgroundColor: "#f00"
 }
 
+//
 "#photosWrapper": {
-	top: "48",
+	top: "48", bottom: "48",
 	width: Ti.UI.FILL, height: Ti.UI.FILL,
 }
 
+//
 "#albumsWrapper": {
-	top: "48",
+	top: "48", 
 	width: Ti.UI.FILL, height: Ti.UI.FILL,
 	visible: false,
 }
@@ -25,3 +28,36 @@
 	height: Ti.UI.SIZE,
 	backgroundColor: "#fff"
 }
+
+//
+"#toolbar": {
+	bottom: 0,
+	height: "48",
+	width: Ti.UI.FILL,
+	backgroundColor: "#000",
+}
+
+"#clearButton": {
+	left: 0, width: 100,
+}
+
+"#countLabel": {
+	width: 100,
+	color: "#fff",
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+}
+
+"#selectButton": {
+	right: 0, width: 100,
+}
+
+".tool": {
+	color: "#fff",
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+}
+
+
+
+
+
+

@@ -1,0 +1,21 @@
+<Alloy>
+	<View id="dialog">
+		<View id="d_shim" class="shim" onClick="onClickDialogShim" />
+		
+	</View>
+	<View id="popup">
+		<View id="p_wrapper">
+			<View id="p_box" />
+			<ImageView id="p_icon" />
+			<Label id="p_title" />
+		</View>
+	</View>
+	<View id="indicator">
+		<View id="i_shim" class="shim" onClick="onClickIndicatorShim" />
+		<View id="i_wrapper">
+			<View id="i_box" />
+			<ImageView id="i_icon" />
+			<Label id="i_title" />
+		</View>
+	</View>
+</Alloy>

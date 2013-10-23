@@ -34,6 +34,15 @@ drawer.init($.win, {
 						alert(1);
 					},
 				},
+				{
+					name: 'photo_picker',
+					title: "Photo Picker",
+					icon: '/appicon.png',
+					onClick: function() {
+						var c = Alloy.createController("photo_picker");
+						Alloy.Globals.openWindow(c.getView());
+					},
+				}
 			],
 		},
 	]

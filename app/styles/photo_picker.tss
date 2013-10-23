@@ -1,0 +1,27 @@
+"#container" : {
+  backgroundColor: "#fff"
+}
+
+"#bar": {
+	top: 0,
+	height: "48", width: Ti.UI.FILL,
+	backgroundColor: "#f00"
+}
+
+"#photosWrapper": {
+	top: "48",
+	width: Ti.UI.FILL, height: Ti.UI.FILL,
+}
+
+"#albumsWrapper": {
+	top: "48",
+	width: Ti.UI.FILL, height: Ti.UI.FILL,
+	visible: false,
+}
+
+"#albums": {
+	top: 0, bottom: 200,
+	left: 30, right: 30,
+	height: Ti.UI.SIZE,
+	backgroundColor: "#fff"
+}

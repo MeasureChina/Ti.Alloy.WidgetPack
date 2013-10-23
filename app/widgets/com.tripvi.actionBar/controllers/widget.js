@@ -49,15 +49,15 @@ function createActionBarView() {
 	if ($._window.navBarHidden || $._window._actionBarHidden || $._window.actionBarHidden) {
 		// navBarHidden인 경우에는 표시안함
 	} else {
-		if ($._useDrawerMenu) {
+/*		if ($._useDrawerMenu) {
 			// drawer menu는 이미 공간이 확보되어있음
-		} else {
+		} else {*/
 			// 넣을 공간만큼 수동으로 layout을 조정해줘야함
 			var container = $._window.children[0];
 			if (container) {
 				container.top = "48"; // 고정값 dp임. 화면폭에 따라 키우지 않는다.
 			}
-		}
+/*		}*/
 		// actionBar를 추가하고
 		$._window.add($.widget);
 		$._window.navBarHidden = true; // native navBar는 숨김

@@ -6,24 +6,21 @@ MAKE_LAYOUT_FIT($);
 
 
 /**
- *	init & release
+ *	window
  *	  
  */
-exports.init = function(window, options) {
-	$._window = window;
+function onCloseWindow(e) {
+	$.win.removeEventListener('androidback', onAndroidBack);
+	$.win.removeEventListener('close', onCloseWindow);
+	exports.release();
+}
+function onAndroidBack(e) {
+	$.win.close();
 }
 
-exports.release = function() {
-	$.destroy();
-	$._window = undefined;
-	
-	//
-	releasePopup();
-	
-	//
-	if (Alloy.Globals.releaseController) Alloy.Globals.releaseController($);
-	$ = undefined;
-}
+$.win.addEventListener('close', onCloseWindow);
+
+
 
 
 /**
@@ -31,45 +28,120 @@ exports.release = function() {
  *	  
  */
 exports.openPopup = function(options) {
-	createPopup();
-	
 	$.p_icon.image = options.icon || "/appicon.png";
-	$.p_title.text = options.text || "popup message";
+	$.p_title.text = options.text || "popup";
 	
-	$._popup.show();
+	// 다른 팝업 감추기
+	$.indicator.visible = false;
+	
+	// 변수 초기화
+	$.popup.visible = true;
+	$.popup.transform = Ti.UI.create2DMatrix().scale(1.1, 1.1);
+	$.popup.opacity = 0.95;
+	
+	$.win.addEventListener('androidback', onAndroidBack); // popup은 back 사용가능
+
+	$.win.addEventListener("open", openPopupEffect);
+	$.win.open();
 }
 
 exports.closePopup = function(options) {
-	$._popup.hide();
+	if ($ && $.win) $.win.close();
 }
 
-function createPopup() {
-	if (!$._popup) {
-		$._window.add($.popup);
-		$._popup = $.popup;
+function openPopupEffect() {
+	
+	$.popup.animate({
+		anchorPoint: { x: 0.5, y: 0.5 },
+		transform: Ti.UI.create2DMatrix(),
+		opacity: 1,
+		duration: 400,
+	}, function() {
+		
+		// 1초후에 자동 닫힘
+		setTimeout(closePopupEffect, 1000);
+	
+	});
+	
+	$.win.removeEventListener("open", openPopupEffect);
+}
+
+function closePopupEffect() {
+	if ($ && $.win && $.popup) {
+		
+		$.popup.animate({
+			opacity: 0,
+			duration: 500,
+		}, function() {
+			exports.closePopup();
+		});
 	}
 }
 
-function releasePopup() {
-	if ($._popup) {
-		$._window.remove($._popup);
+
+
+
+/**
+ *	indicator
+ *	  
+ */
+exports.openIndicator = function(options) {
+	$.i_title.text = options.text || "loading...";
+	
+	// 다른 팝업 감추기
+	$.popup.visible = false;
+	
+	// 변수 초기화
+	$.indicator.visible = true;
+	$.indicator.transform = Ti.UI.create2DMatrix().scale(1.1, 1.1);
+	
+	$.win.addEventListener("open", openIndicatorEffect);
+	$.win.open();
+}
+
+exports.closeIndicator = function(options) {
+	closeIndicatorEffect();
+}
+
+function openIndicatorEffect() {
+	
+	$.i_icon.start();
+	
+	$.indicator.animate({
+		anchorPoint: { x: 0.5, y: 0.5 },
+		transform: Ti.UI.create2DMatrix(),
+		duration: 400,
+	});
+	
+	$.win.removeEventListener("open", openIndicatorEffect);
+}
+
+function closeIndicatorEffect() {
+	if ($ && $.win && $.indicator) {
+		
+		$.indicator.animate({
+			opacity: 0,
+			duration: 500,
+		}, function() {
+			$.i_icon.stop();
+			$.win.close();
+		});
 	}
 }
 
 
 
 
-
-
-
-
-
-function onClickDialogShim(e) {
+/**
+ *	release
+ *	  
+ */
+exports.release = function() {
+	$.destroy();
 	
-}
-
-function onClickIndicatorShim(e) {
+	$.popup.removeEventListener("click", exports.closePopup);
 	
+	//
+	if (Alloy.Globals.releaseController) Alloy.Globals.releaseController($);
+	$ = undefined;
 }
-
-

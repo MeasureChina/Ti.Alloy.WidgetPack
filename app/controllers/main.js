@@ -47,6 +47,11 @@ drawer.init($.win, {
 						
 						var c = Alloy.createController("photo_picker", options);
 						Alloy.Globals.openWindow(c.getView());
+						
+						c.on("select:cover_photo", function(e) {
+							console.log("fire event select cover photos");
+							console.log(e.cover_photo);
+						});
 					},
 				},
 				{
@@ -62,6 +67,11 @@ drawer.init($.win, {
 						
 						var c = Alloy.createController("photo_picker", options);
 						Alloy.Globals.openWindow(c.getView());
+						
+						c.on("select:photos", function(e) {
+							console.log("fire event select photos");
+							console.log(e.photos);
+						});
 					},
 				}
 			],

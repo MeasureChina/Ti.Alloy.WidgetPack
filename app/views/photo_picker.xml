@@ -8,7 +8,7 @@
 			<!-- 사진 리스트 -->
 			<View id="photosWrapper">
 				<!-- onScroll="onScrollListView" onItemclick="onItemclick"> -->
-				<ListView id="photos" defaultItemTemplate="photos" onItemclick="onItemclick" >
+				<ListView id="photos" defaultItemTemplate="photos" onScroll="onScrollListView" onItemclick="onItemclick" >
 					<Templates>
 						<Require src="picker_template" />
 					</Templates>

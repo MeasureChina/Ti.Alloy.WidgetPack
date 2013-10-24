@@ -19,6 +19,7 @@ $._albums = undefined;
 
 $._page = undefined;
 $._per_page = 50;
+$._page_end = false;
 
 $._current_section_row = undefined;
 
@@ -93,7 +94,10 @@ function openCropIntent(data) {
 		if (param.resultCode == Ti.Android.RESULT_OK) {
 			// TODO: 
 			console.log("path :: " + tmpfile.read().nativePath);
-			// $.trigger('update', { image: tmpfile.read() });
+			$.trigger('select:cover_photo', { cover_photo: tmpfile.read().nativePath });
+			setTimeout(_.bind(function() {
+				this.win.close();
+			}, $), 200);
 		} else {
 			Ti.API.info('  activity return ERROR with resultCode: ' + param.resultCode);
 		}
@@ -112,12 +116,15 @@ function openCropIntent(data) {
 function groupingPostAndUpdateView(photos) {
 	
 	console.log(" >> groupingPostAndUpdateView ");
+	$._page_end = _.size(photos) < $._per_page;
+	
 	
 	var groups = _.groupBy(photos, function(photo) { return moment(photo["dateTaken"]).format("MMMM D, YYYY") });
+	var section = $.photos.sections[0];
+	var items = [];
 	
 	_.each(groups, function(group, date) {
 		console.log("date :: " + date);
-		var items = [];
 		
 		if (!$._current_section_row || ($._current_section_row._date != date)) {
 			$._current_section_row = {
@@ -128,12 +135,24 @@ function groupingPostAndUpdateView(photos) {
 			
 			items.push(_.clone($._current_section_row));
 		}
+		else {
+			var last_item = _.last(section.getItems());
+
+			if (_.isNumber(last_item["photos_count"]) && last_item["photos_count"] < 4) {
+				section.deleteItemsAt(section.items.length-1, 1);
+				
+				for(var i=last_item["photos_count"]; i > 0; i--) {
+					group.unshift(last_item["photoInfo" + i]);
+				}
+			}
+		}
 		
 		var rowCount = Math.ceil(group.length / 4);
 		
 		for (var i=0; i<rowCount; i++) {
 			var item = { template: 'photos' };
-			
+			var photos_count = 4;
+
 			for (var j=0; j<4; j++) {
 				var photo = group[4*i+j];
 				if (photo) {
@@ -150,18 +169,19 @@ function groupingPostAndUpdateView(photos) {
 					u.fill_to_container({ width: u.resized_value(70), height: u.resized_value(70) }, item["photo"+(j+1)]);
 				}
 				else {
+					photos_count -= 1;
 					item["photoWrapper"+(j+1)] = { visible: false };
 					item["photo"+(j+1)] = { visible: false };
 					item["check"+(j+1)] = { visible: false };
 				}
-			}
+			}	
+			item["photos_count"] = photos_count;
 			
 			items.push(item);
 		}
-		
-		var section = $.photos.sections[0];
-		section.appendItems(items);
 	});
+	
+	section.appendItems(items);
 }
 
 function releaseAlbumList() {
@@ -173,6 +193,7 @@ function releaseAlbumList() {
 			})
 			rows = undefined;
 		}
+		
 		$.albums.setData([]);
 /*		$._table.removeEventListener('scroll', pagination);*/
 	}
@@ -275,9 +296,13 @@ function isOpenedAlbum() {
 }
 
 function resetListView() {
-	if ($.photos){
+	if ($ && $.photos){
 		var section = $.photos.sections[0];
 		section.setItems([]);
+		
+		$._current_section_row = undefined;
+		$._page = undefined;
+		$._page_end = false;
 	}
 }
 
@@ -314,6 +339,43 @@ function clearListItems() {
  *
  */
 // XML에서 정의된 모든 이벤트 핸들러
+
+function onScrollListView(e) {
+	// firstVisibleItem == 0이면 맨위에 다다른것임
+	if (e.firstVisibleItem == 0) {
+		onAppearHeader();
+	}
+	// firstVisibleItem + visibleItemCount == totalItemCount이면 맨 아래에 다다른것임
+	else if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
+		onAppearFooter();
+	}
+	//
+	else {
+		
+	}
+}
+
+function onAppearHeader() {
+	
+}
+
+function onAppearFooter() {
+	
+	if ($._delay) return;
+	if ($._page_end) {
+		Ti.API.info("page end!!!");
+		return;
+	}
+	
+	$._delay = true;
+	setTimeout(_.bind(function() {
+		this._delay = false;
+	}, $), 500);
+	
+	// pagination
+	$._page += 1;
+	queryPhotos();
+}
 
 function onItemclick(e) {
 	if (!e.bindId) return;
@@ -362,6 +424,11 @@ function onClickClear(e) {
 function onClickSelect(e) {
 	e.source.touchEnabled = false; // 여러번 클릭을 막기위한 코드.  click/singletap 이벤트에 대해 넣어둔다.
 	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 1000);
+
+	$.trigger("select:photos", { photos: $._selected_photos });
+	setTimeout(_.bind(function() {
+		this.win.close();
+	}, $), 200);
 }
 
 function onClickBar(e) {
@@ -445,6 +512,7 @@ function onCloseWindow(e) {
 	$.win.removeEventListener('close', onCloseWindow);
 	$.win.removeEventListener('androidback', onAndroidBack);
 	// clear model-view bindings
+	$.off();
 	$.destroy();
 
 

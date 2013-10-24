@@ -26,7 +26,7 @@ $._current_section_row = undefined;
 // 선택된 사진들 저장
 $._selected_photos = {};
 
-// 선택된 사진을 보고있는지 선택된 사진들을 보고있는지 알기위함
+// 선택된 앰범의 사진들을 보고있는지 유저가 선택한 사진들을 보고있는지 알기위함
 $._show_mode = "album"; // album or selected
 
 
@@ -134,8 +134,6 @@ function openCropIntent(data) {
 
 // view를 변경하는 모든 코드
 function groupingPostAndUpdateView(photos) {
-	
-	console.log(" >> groupingPostAndUpdateView ");
 	$._page_end = _.size(photos) < $._per_page;
 	
 	if ($._show_mode == "selected") {
@@ -148,8 +146,8 @@ function groupingPostAndUpdateView(photos) {
 	var items = [];
 	
 	_.each(groups, function(group, date) {
-		console.log("date :: " + date);
 		
+		// section row가 없으면 생성
 		if (!$._current_section_row || ($._current_section_row._date != date)) {
 			$._current_section_row = {
 				template: 'section',
@@ -159,9 +157,11 @@ function groupingPostAndUpdateView(photos) {
 			
 			items.push(_.clone($._current_section_row));
 		}
+		// 아니면 마지막 row의 사진이 4장 미만인지 검사
 		else {
 			var last_item = _.last(section.getItems());
-
+			
+			// 마지막 row에 사진이 4장 미민이면 삭제 후 사진 정보를 배열에 넣고 다시 생성
 			if (_.isNumber(last_item["photos_count"]) && last_item["photos_count"] < 4) {
 				section.deleteItemsAt(section.items.length-1, 1);
 				
@@ -186,7 +186,7 @@ function groupingPostAndUpdateView(photos) {
 					// photo data
 					item["photoInfo"+(j+1)] = photo;
 					
-					// TODO: 선택된 사진이 기억되어있는 경우 그 여부에 따라 보여줄지 결정
+					// 선택된 사진이 기억되어있는 경우 그 여부에 따라 보여줄지 결정
 					item["check"+(j+1)] = { visible: !!$._selected_photos[photo["id"]] };
 					
 					// fill to container
@@ -219,10 +219,10 @@ function releaseAlbumList() {
 		}
 		
 		$.albums.setData([]);
-/*		$._table.removeEventListener('scroll', pagination);*/
 	}
 }
 
+// 선택된 앨범 체크
 function checkRows() {
 	if ($ && $.albums)  {
 		if ($.albums.data && $.albums.data[0]){
@@ -234,6 +234,7 @@ function checkRows() {
 	}
 }
 
+// 앨범을 보여줄 때마다 새로 쿼리해서 앨범 리스트 띄운다
 function showAlbums() {
 	queryAlbums();
 	releaseAlbumList();
@@ -331,11 +332,10 @@ function resetListView() {
 }
 
 function countSelectedPhotos() {
-	console.log("size :: " + _.size($._selected_photos));
 	$.countLabel.text = ($._selected_photos ? _.size($._selected_photos) : 0) + " photos";
 }
 
-function clearListItems() {
+function clearSelectedPhotos() {
 	var section = $.photos.sections[0];
 	
 	var items = [];
@@ -364,6 +364,7 @@ function clearListItems() {
  */
 // XML에서 정의된 모든 이벤트 핸들러
 
+// for pagination
 function onScrollListView(e) {
 	// firstVisibleItem == 0이면 맨위에 다다른것임
 	if (e.firstVisibleItem == 0) {
@@ -402,6 +403,7 @@ function onAppearFooter() {
 	queryPhotos();
 }
 
+
 function onItemclick(e) {
 	if (!e.bindId) return;
 	
@@ -438,11 +440,12 @@ function onItemclick(e) {
 	}
 }
 
+
 function onClickClear(e) {
 	e.source.touchEnabled = false; // 여러번 클릭을 막기위한 코드.  click/singletap 이벤트에 대해 넣어둔다.
 	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 1000);
 	
-	clearListItems();
+	clearSelectedPhotos();
 	
 	if ($._show_mode == "selected") {
 		resetListView();

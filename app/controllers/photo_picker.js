@@ -115,9 +115,9 @@ function openCropIntent(data) {
 			// TODO: 
 			console.log("path :: " + tmpfile.read().nativePath);
 			$.trigger('select:cover_photo', { cover_photo: tmpfile.read().nativePath });
-			setTimeout(_.bind(function() {
-				this.win.close();
-			}, $), 200);
+			// setTimeout(_.bind(function() {
+			$.win.close();
+			// }, $), 200);
 		} else {
 			Ti.API.info('  activity return ERROR with resultCode: ' + param.resultCode);
 		}
@@ -338,19 +338,19 @@ function countSelectedPhotos() {
 function clearSelectedPhotos() {
 	var section = $.photos.sections[0];
 	
+	$._selected_photos = {};
 	var items = [];
 	_.each(section.getItems(), function(data, index) {
 		if (data["template"] == "photos") {
 			for(var i=0; i < 4; i++) {
 				if (data["check"+(i+1)]["visible"]) {
 					data["check"+(i+1)] = { visible: false };
-					$._selected_photos = _.omit($._selected_photos, data["photoInfo"+(i+1)]["id"]);
+					// $._selected_photos = _.omit($._selected_photos, data["photoInfo"+(i+1)]["id"]);
 				}	
 			}
 		}
 		items.push(data);
 	});
-	
 	
 	section.setItems(items);
 }

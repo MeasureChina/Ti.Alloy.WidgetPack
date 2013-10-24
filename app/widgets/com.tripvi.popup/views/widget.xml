@@ -1,0 +1,21 @@
+<Alloy>
+	<Window id="win">
+		<View id="dialog">
+		
+		</View>
+		<View id="popup" onClick="exports.closePopup">
+			<View id="p_wrapper">
+				<View id="p_box" />
+				<ImageView id="p_icon" />
+				<Label id="p_title" />
+			</View>
+		</View>
+		<View id="indicator">
+			<View id="i_wrapper">
+				<View id="i_box" />
+				<ImageView id="i_icon" />
+				<Label id="i_title" />
+			</View>
+		</View>
+	</Window>
+</Alloy>

@@ -138,6 +138,7 @@ exports.init = function(window, options) {
 						// - 보통 Window Event 처리가 달라져야함.
 						var c = Alloy.createController(item.window, { openAsView: true });
 						var v = c.getView();
+						var w = v;
 						
 						// window title 저장
 						if (v.titleid) {
@@ -162,18 +163,20 @@ exports.init = function(window, options) {
 						// 컨텐츠 View 바꿔치기
 						setContentView(v);
 						row._view = v;
+						row._win = w; // event는 똑같이 window에 발생시켜야함
 						
 						// menu가 변경될때 resource 해제해야함
 						row._releaseResources = function() {
 							row._releaseResources = undefined;
 							row._view._options = undefined;
 							row._view = undefined;
+							row._win = undefined;
 						}
 						
 						// To prevent flickering, remove view after the new one is inserted
 						if ($._currentMenu) {
-							$._currentMenu._view.fireEvent('blur'); // TODO: window인 경우. 제거헤야함
-							$._currentMenu._view.fireEvent('close'); // TODO: window인 경우. 제거헤야함
+							$._currentMenu._win.fireEvent('blur');
+							$._currentMenu._win.fireEvent('close');
 							
 							// make row normal, not active state
 							$._currentMenu._setCurrentMenu(false);
@@ -188,8 +191,8 @@ exports.init = function(window, options) {
 						// make the new row active state
 						$._currentMenu = row;
 						$._currentMenu._setCurrentMenu(true);
-						$._currentMenu._view.fireEvent('open'); // TODO: window인 경우. 제거헤야함
-						$._currentMenu._view.fireEvent('focus'); // TODO: window인 경우. 제거헤야함
+						$._currentMenu._win.fireEvent('open');
+						$._currentMenu._win.fireEvent('focus');
 						
 						$.trigger('menuselect', { title: $._currentMenu._title, options: $._currentMenu._view._options });
 					}

@@ -1,3 +1,16 @@
 "#container" : {
 	
 }
+
+"#button1": {
+	top: 150,
+	title: "popup",
+}
+"#button2": {
+	top: 250,
+	title: "indicator",
+}
+"#button3": {
+	top: 350,
+	title: "dialog",
+}

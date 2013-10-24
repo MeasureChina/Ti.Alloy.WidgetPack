@@ -1,0 +1,82 @@
+"#win": {
+	backgroundColor: "transparent",
+	opacity: 1,
+}
+
+
+"#dialog": {
+	visible: false,
+}
+
+
+
+//
+"#popup": {
+	visible: false,
+}
+"#p_wrapper": {
+	width: 160,
+	height: 110,
+}
+"#p_box": {
+	backgroundColor: "#000",
+	opacity: 0.75,
+	borderRadius: "20",
+}
+"#p_icon": {
+	width: 40,
+	height: 40,
+	top: 25,
+}
+"#p_title": {
+	font: { fontSize: 18 },
+	left: 20,
+	right: 20,
+	bottom: 20,
+	color: "#fff",
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+}
+
+
+
+//
+"#indicator": {
+	visible: false,
+}
+"#i_wrapper": {
+	width: 160,
+	height: 110,
+}
+"#i_box": {
+	backgroundColor: "#000",
+	opacity: 0.75,
+	borderRadius: "20",
+}
+"#i_icon": {
+	width: 40,
+	height: 25,
+	top: 30,
+	images: [
+		WPATH("small/loading01.png"),
+		WPATH("small/loading02.png"),
+		WPATH("small/loading03.png"),
+		WPATH("small/loading04.png"),
+		WPATH("small/loading05.png"),
+		WPATH("small/loading06.png"),
+		WPATH("small/loading07.png"),
+		WPATH("small/loading08.png"),
+		WPATH("small/loading09.png")
+	],
+}
+"#i_title": {
+	font: { fontSize: 18 },
+	left: 20,
+	right: 20,
+	bottom: 20,
+	color: "#fff",
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+}
+
+
+
+

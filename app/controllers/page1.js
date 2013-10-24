@@ -29,3 +29,20 @@ $.win._options = {
 		},
 	],
 };
+
+
+function onClick1(e) {
+	Alloy.createWidget("com.tripvi.popup").openPopup({
+		
+	});
+}
+function onClick2(e) {
+	Alloy.createWidget("com.tripvi.popup").openIndicator({
+		
+	});
+}
+function onClick3(e) {
+	// Alloy.createWidget("com.tripvi.popup").openPopup({
+	// 	
+	// });
+}

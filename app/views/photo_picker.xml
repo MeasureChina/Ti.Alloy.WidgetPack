@@ -23,7 +23,9 @@
 					<Label class="tool" text="clear" />
 				</View>
 				
-				<Label id="countLabel" text="0 photos"/>
+				<View id="countButton" onClick="onClickCount">
+					<Label class="tool" id="countLabel" text="0 photos"/>
+				</View>
 				
 				<View id="selectButton" onClick="onClickSelect">
 					<Label class="tool" text="select" />

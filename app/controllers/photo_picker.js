@@ -23,7 +23,11 @@ $._page_end = false;
 
 $._current_section_row = undefined;
 
+// 선택된 사진들 저장
 $._selected_photos = {};
+
+// 선택된 사진을 보고있는지 선택된 사진들을 보고있는지 알기위함
+$._show_mode = "album"; // album or selected
 
 
 
@@ -43,11 +47,27 @@ function queryAlbums() {
 
 function queryPhotos() {
 	
+	$._show_mode = "album";
+	
 	$._page = $._page || 1;
 	
 	var photos = $._media_query_module.queryPhotosByAlbumId($._last_album_id, (($._page-1) * $._per_page), $._per_page);
 	groupingPostAndUpdateView(photos);
 	
+}
+
+function showSelectedPhotos() {
+	
+	if (_.size($._selected_photos) <= 0) {
+		alert("최소한 하나의 사진이 선택되어있어야 합니다.");
+		return;
+	}
+	
+	$._show_mode = "selected"
+	
+	
+	resetListView();
+	groupingPostAndUpdateView($._selected_photos);
 }
 
 
@@ -118,6 +138,10 @@ function groupingPostAndUpdateView(photos) {
 	console.log(" >> groupingPostAndUpdateView ");
 	$._page_end = _.size(photos) < $._per_page;
 	
+	if ($._show_mode == "selected") {
+		photos = _.sortBy(photos, function(photo) { return photo["dateTaken"]; });
+		photos.reverse();
+	}
 	
 	var groups = _.groupBy(photos, function(photo) { return moment(photo["dateTaken"]).format("MMMM D, YYYY") });
 	var section = $.photos.sections[0];
@@ -361,6 +385,7 @@ function onAppearHeader() {
 
 function onAppearFooter() {
 	
+	if ($._show_mode == "selected") return;
 	if ($._delay) return;
 	if ($._page_end) {
 		Ti.API.info("page end!!!");
@@ -418,6 +443,12 @@ function onClickClear(e) {
 	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 1000);
 	
 	clearListItems();
+	
+	if ($._show_mode == "selected") {
+		resetListView();
+		queryPhotos();
+	}
+	
 	countSelectedPhotos();
 }
 
@@ -468,6 +499,13 @@ function onClickAlbums(e) {
 	}, 100);
 }
 
+function onClickCount(e) {
+	e.source.touchEnabled = false; // 여러번 클릭을 막기위한 코드.  click/singletap 이벤트에 대해 넣어둔다.
+	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 1000);
+	
+	showSelectedPhotos();
+}
+
 
 
 
@@ -506,6 +544,9 @@ function onCloseWindow(e) {
 	$.albumsWrapper.removeEventListener("click", onClickAlbumsWrapper);
 	$.albums.removeEventListener("click", onClickAlbums);
 	$.photos.removeEventListener("itemclick", onItemclick);
+	$.clearButton.removeEventListener("click", onClickClear);
+	$.countButton.removeEventListener("click", onClickCount);
+	$.selectButton.removeEventListener("click", onClickSelect);
 	
 	// XML에서 정의된 이벤트 해제
 	$.win.removeEventListener('open', onOpenWindow);
@@ -526,6 +567,10 @@ function onCloseWindow(e) {
 function onAndroidBack() {
 	if (isOpenedAlbum()) {
 		hideAlbums();
+	}
+	else if($._show_mode == "selected") {
+		resetListView();
+		queryPhotos();
 	}
 	else {
 		$.win.close();

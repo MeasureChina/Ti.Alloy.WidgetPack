@@ -9,6 +9,7 @@ Alloy.Globals.makeLayoutFit($);
 // controller가 처음 만들어질때 1번만 실행됨
 $._remember_list_album = args.remember_list_album;
 $._mode = args.mode;
+$._max_count = args.max_count;
 
 // 모든 variable은 $._로 시작함
 // view는 _없이 $.로 시작해도 괜찮다
@@ -130,6 +131,7 @@ function openCropIntent(data) {
 
 }
 
+//
 function getCurrentSectionRow() {
 	return _.clone($._current_section_row);
 }
@@ -214,8 +216,6 @@ function groupingPostAndUpdateView(photos) {
 		}
 		section.appendItems(items);
 	});
-	
-	
 }
 
 function releaseAlbumList() {
@@ -232,6 +232,7 @@ function releaseAlbumList() {
 	}
 }
 
+//
 // 선택된 앨범 체크
 function checkRows() {
 	if ($ && $.albums)  {
@@ -330,6 +331,7 @@ function isOpenedAlbum() {
 	return $.albumsWrapper.visible;
 }
 
+//
 function resetListView() {
 	if ($ && $.photos){
 		var section = $.photos.sections[0];
@@ -348,6 +350,7 @@ function releaseListView() {
 	$.photos.deleteSectionAt(0);
 }
 
+//
 function countSelectedPhotos() {
 	$.countLabel.text = ($._selected_photos ? _.size($._selected_photos) : 0) + " photos";
 }
@@ -435,8 +438,13 @@ function onItemclick(e) {
 
 	//
 	var num = e.bindId.replace(/[a-zA-Z]/ig, "");
-	data["check"+num] = { visible: !data["check"+num]["visible"] };
 	
+	if ($._mode == "multiple" && _.size($._selected_photos) >= $._max_count) {
+		alert("사진 선택 수는 " + $._max_count + "장 까지 입니다.");
+		return;
+	}
+	
+	data["check"+num] = { visible: !data["check"+num]["visible"] };
 	var photo_info = data["photoInfo"+num];
 	
 	if ($._mode == "single") {

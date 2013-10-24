@@ -43,6 +43,7 @@ drawer.init($.win, {
 						var options = {
 							mode: "single",
 							remember_list_album: false,
+							max_count: 10,
 						}
 						
 						var c = Alloy.createController("photo_picker", options);
@@ -63,6 +64,7 @@ drawer.init($.win, {
 						var options = {
 							mode: "multiple",
 							remember_list_album: true,
+							max_count: 10,
 						}
 						
 						var c = Alloy.createController("photo_picker", options);

@@ -37,7 +37,7 @@ $._show_mode = "album"; // album or selected
  */
 // model의 값을 변경시키는 모든 case는 이곳에 함수를 만든다.
 function queryAlbums() {
-	$._albums = $._media_query_module.queryAlbumList();
+	$._albums = _.clone($._media_query_module.queryAlbumList());
 	
 	// $._last_album_id가 없거나 저장해놓은 앨범이 존재하지 않으면 첫번째 앨범을 last album id로 저장
 	if (!$._last_album_id || ($._last_album_id && !_.find($._albums, function(album) { return album.id == $._last_album_id }))) { 
@@ -52,8 +52,9 @@ function queryPhotos() {
 	$._page = $._page || 1;
 	
 	var photos = $._media_query_module.queryPhotosByAlbumId($._last_album_id, (($._page-1) * $._per_page), $._per_page);
-	groupingPostAndUpdateView(photos);
+	groupingPostAndUpdateView(_.clone(photos));
 	
+	photos = undefined;
 }
 
 function showSelectedPhotos() {
@@ -129,7 +130,13 @@ function openCropIntent(data) {
 
 }
 
+function getCurrentSectionRow() {
+	return _.clone($._current_section_row);
+}
 
+function setCurrentSectionRow(section) {
+	$._current_section_row = _.clone(section);
+}
 
 
 // view를 변경하는 모든 코드
@@ -142,20 +149,22 @@ function groupingPostAndUpdateView(photos) {
 	}
 	
 	var groups = _.groupBy(photos, function(photo) { return moment(photo["dateTaken"]).format("MMMM D, YYYY") });
-	var section = $.photos.sections[0];
-	var items = [];
 	
 	_.each(groups, function(group, date) {
 		
+		var section = $.photos.sections[0];
+		var items = [];
+		
 		// section row가 없으면 생성
-		if (!$._current_section_row || ($._current_section_row._date != date)) {
-			$._current_section_row = {
+		var currentSectionRow = getCurrentSectionRow();
+		if (!currentSectionRow || (currentSectionRow._date != date)) {
+			setCurrentSectionRow({
 				template: 'section',
 				dateTaken: { text: date },
 				_date: date,
-			}
+			});
 			
-			items.push(_.clone($._current_section_row));
+			items.push(getCurrentSectionRow());
 		}
 		// 아니면 마지막 row의 사진이 4장 미만인지 검사
 		else {
@@ -203,9 +212,10 @@ function groupingPostAndUpdateView(photos) {
 			
 			items.push(item);
 		}
+		section.appendItems(items);
 	});
 	
-	section.appendItems(items);
+	
 }
 
 function releaseAlbumList() {
@@ -329,6 +339,13 @@ function resetListView() {
 		$._page = undefined;
 		$._page_end = false;
 	}
+}
+
+function releaseListView() {
+	var section = $.photos.sections[0];
+	section.deleteItemsAt(0, section.items.length);
+	
+	$.photos.deleteSectionAt(0);
 }
 
 function countSelectedPhotos() {
@@ -547,6 +564,7 @@ function onCloseWindow(e) {
 	$.albumsWrapper.removeEventListener("click", onClickAlbumsWrapper);
 	$.albums.removeEventListener("click", onClickAlbums);
 	$.photos.removeEventListener("itemclick", onItemclick);
+	$.photos.removeEventListener("scroll", onScrollListView);
 	$.clearButton.removeEventListener("click", onClickClear);
 	$.countButton.removeEventListener("click", onClickCount);
 	$.selectButton.removeEventListener("click", onClickSelect);
@@ -561,6 +579,14 @@ function onCloseWindow(e) {
 
 
 	// 모델 및 변수 제거
+	// releaseListView();
+	
+	$._media_query_module = undefined;
+	$._last_album_id = undefined;
+	$._albums = undefined;
+	$._current_section_row = undefined;
+	$._show_mode = undefined;
+	$._selected_photos = undefined;
 
 	// remove view elements
 	require('utility').releaseController($);

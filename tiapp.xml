@@ -31,6 +31,11 @@
 		<tool-api-level>16</tool-api-level>
 		<manifest android:versionCode="100" android:versionName="1.0.0">
 			<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="11" />
+			<application android:debuggable="true"
+                android:hardwareAccelerated="true"
+                android:icon="@drawable/appicon"
+				android:largeHeap="true">
+			</application>
 		</manifest>
 	</android>
 	<mobileweb>

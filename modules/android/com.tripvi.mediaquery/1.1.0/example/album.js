@@ -29,7 +29,7 @@ function getPhotos(e) {
 		
 		var album = albums[i];
 		
-		console.log(album);
+		console.log(new Date(album["dateTaken"]));
 		
 		var row = Ti.UI.createTableViewRow({
 			height: "75dp",

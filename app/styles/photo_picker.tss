@@ -22,6 +22,12 @@
 	visible: false,
 }
 
+"#bg": {
+	width: Ti.UI.FILL,, height: Ti.UI.FILL,
+	backgroundColor: "#000",
+	opacity: 0.55,
+}
+
 "#albums": {
 	top: 0, bottom: 200,
 	left: 30, right: 30,

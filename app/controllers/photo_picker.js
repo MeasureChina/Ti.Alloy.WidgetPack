@@ -114,7 +114,6 @@ function openCropIntent(data) {
 		Ti.API.info('  cropped image was return: ' + param.resultCode);
 		
 		if (param.resultCode == Ti.Android.RESULT_OK) {
-			// TODO: 
 			console.log("path :: " + tmpfile.read().nativePath);
 			$.trigger('select:cover_photo', { cover_photo: tmpfile.read().nativePath });
 			// setTimeout(_.bind(function() {
@@ -492,10 +491,14 @@ function onClickSelect(e) {
 
 function onClickBar(e) {
 	e.source.touchEnabled = false; // 여러번 클릭을 막기위한 코드.  click/singletap 이벤트에 대해 넣어둔다.
-	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 1000);
+	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 250);
 	
-	if (!$.albumsWrapper.visible) {
+	if (!isOpenedAlbum()) {
 		showAlbums();
+	}
+	else {
+		hideAlbums();
+		releaseAlbumList();
 	}
 }
 
@@ -503,7 +506,7 @@ function onClickAlbumsWrapper(e) {
 	e.source.touchEnabled = false; // 여러번 클릭을 막기위한 코드.  click/singletap 이벤트에 대해 넣어둔다.
 	setTimeout(_.bind(function() { this.touchEnabled = true }, e.source), 1000);
 	
-	if (e.source.id == "albumsWrapper") {
+	if (e.source.id == "albumsWrapper" || e.source.id == "bg") {
 		hideAlbums();
 		releaseAlbumList();
 	}

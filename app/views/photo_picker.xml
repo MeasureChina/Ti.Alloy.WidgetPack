@@ -34,6 +34,7 @@
 			
 			<!-- 앨범 리스트 -->
 			<View id="albumsWrapper" onClick="onClickAlbumsWrapper">
+				<View id="bg" />
 				<TableView id="albums" onClick="onClickAlbums"/>
 			</View>
 		</View>

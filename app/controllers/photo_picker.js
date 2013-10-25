@@ -438,22 +438,27 @@ function onItemclick(e) {
 	//
 	var num = e.bindId.replace(/[a-zA-Z]/ig, "");
 	
-	if ($._mode == "multiple" && _.size($._selected_photos) >= $._max_count) {
-		alert("사진 선택 수는 " + $._max_count + "장 까지 입니다.");
-		return;
-	}
-	
-	data["check"+num] = { visible: !data["check"+num]["visible"] };
 	var photo_info = data["photoInfo"+num];
 	
 	if ($._mode == "single") {
 		openCropIntent("file://" + photo_info["path"]);
 	}
 	else {
-		if (data["check"+num]["visible"]) {
-			$._selected_photos[photo_info["id"]] = photo_info;
+		
+		if (!data["check"+num]["visible"]) {
+			
+			if ($._mode == "multiple" && _.size($._selected_photos) >= $._max_count) {
+				alert("사진 선택 수는 " + $._max_count + "장 까지 입니다.");
+				return;
+			}
+			else {
+				data["check"+num] = { visible: !data["check"+num]["visible"] };
+				$._selected_photos[photo_info["id"]] = photo_info;
+			}
+			
 		}
 		else {
+			data["check"+num] = { visible: !data["check"+num]["visible"] };
 			$._selected_photos = _.omit($._selected_photos, photo_info["id"]);
 		}
 

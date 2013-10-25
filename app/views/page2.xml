@@ -1,7 +1,11 @@
 <Alloy>
 	<Window id="win" title="Two">
 		<View id="container">
-			<Label>Page 2</Label>
+			<TableView id="table" dataCollection="user" onClick="removeItem" onLongpress="updateItem">
+				<TableViewRow class="row">
+					<Label text="{name}"/>
+				</TableViewRow>
+			</TableView>
 		</View>
 	</Window>
 </Alloy>

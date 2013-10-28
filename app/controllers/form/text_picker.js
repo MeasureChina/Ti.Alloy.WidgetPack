@@ -7,6 +7,8 @@ u.initStyleProperty($.container, args);
 exports.init = function(options) {
 	// initialize value
 	exports.setValue(options.value || $._items[0][1]);
+	
+	// TODO: hint text
 }
 
 exports.release = function() {
@@ -46,6 +48,7 @@ function openPickerWindow() {
 		bottom: 10,
 		left: 12,
 		right: 12,
+		value: $._value,
 	});
 	container.add(textArea);
 	

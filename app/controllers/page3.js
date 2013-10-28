@@ -38,7 +38,7 @@ $.input2.init({
 	],
 	value: "male",
 	pickerStyle: {
-		top: 47,
+		top: 48,
 		left: 60,
 		width: 140,
 	},

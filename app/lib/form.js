@@ -59,7 +59,76 @@ exports.createSimplePickerWindow = function(options) {
 	return win;
 }
 
+function Form(_model, _config) {
+	var model = _model;
+	var config = _config;
+	
+	this.updateModel = function() {
+		var attrs = {};
+		_.each(config, function(v, k) {
+			attrs[k] = v.getValue();
+		});
+		if (model) {
+			model.set(attrs, { silent: true });
+		}
+		return attrs;
+	};
+	this.updateView = function(attrs) {
+		_.each(config, function(v, k) {
+			var val;
+			if (attrs) {
+				val = attrs[k];
+			} else {
+				if (_.isFunction(model[k])) {
+					val = model[k]();
+				} else if (model.get) {
+					val = model.get(k);
+				} else {
+					val = model[k];
+				}
+			}
+			v.setValue(val);
+		});
+	};
+	this.validate = function(options) {
+		var error = [];// array of validation error: [columnName, ruleName, guideValue, ...]
+		_.each(options, function(rules, k) {
+			var input = config[k];
+			if (!input) return;
+			
+			var val = input.getValue();
+			
+			_.each(rules, function(guide, key) {
+				switch (key) {
+					case "presence":
+						if (guide && _.isEmpty(val)) {
+							error.push([k, key, guide]);
+						}
+						break;
+					case "minLength":
+						if (!val || guide > val.length) {
+							error.push([k, key, guide]);
+						}
+						break;
+					case "maxLength":
+						if (!val || guide < val.length) {
+							error.push([k, key, guide]);
+						}
+						break;
+					default:
+						Ti.API.warn("invalid form validation scheme - " + key + " " + guide);
+				}
+			});
+		});
+		
+		return error.length == 0 ? undefined : error;
+	};
+}
 
+exports.builder = function(model, config) {
+	var f = new Form(model, config);
+	return f;
+}
 
 
 

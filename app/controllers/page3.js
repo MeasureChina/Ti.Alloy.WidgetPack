@@ -27,7 +27,6 @@ $.input1.init({
 		["value F", "f"], 
 		["value G", "g"]
 	],
-	value: "b",
 });
 
 $.input2.init({
@@ -36,10 +35,40 @@ $.input2.init({
 		["Female", "female"], 
 		["Both", "both"]
 	],
-	value: "male",
 	pickerStyle: {
 		top: 48,
 		left: 60,
 		width: 140,
 	},
 });
+
+$.input3.init();
+
+
+var model = {
+	category: "f",
+	gender: "male",
+	body: "body",
+};
+
+var form = require("form").builder(model, {
+	category: $.input1,
+	gender: $.input2,
+	body: $.input3,
+});
+
+form.updateView();
+
+
+function onSubmit() {
+	var error = form.validate({
+		category: { presence: true },
+		body: { minLength: 1, maxLength: 12 },
+	});
+	
+	if (error) {
+		alert(error[0].join(" "));
+	} else {
+		alert("Okay :)");
+	}
+}

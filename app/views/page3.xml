@@ -5,6 +5,8 @@
 			<Require id="input2" class="input" src="form/spinner" />
 			
 			<Require id="input3" src="form/text_picker" />
+			
+			<Button id="submit" title="Save" onClick="onSubmit"/>
 		</View>
 	</Window>
 </Alloy>

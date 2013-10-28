@@ -5,8 +5,9 @@ u.initStyleProperty($.container, args);
 
 
 exports.init = function(options) {
+	options = options || {};
 	// initialize value
-	exports.setValue(options.value || $._items[0][1]);
+	exports.setValue(options.value);
 	
 	// TODO: hint text
 }

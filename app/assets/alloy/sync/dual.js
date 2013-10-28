@@ -482,9 +482,21 @@ function Sync(method, model, opts) {
 	/*	RESTful URL builder
 	 */
 	function makeResourcePath(basePath, modelParams, attrs, _id) {
-		var s = '' + basePath;
-		// TODO: attrs
-		
+		// replace resource_id
+		var names = basePath.split("/");
+		for (var i=0; i < names.length; i++) {
+			var name = names[i];
+			if (name[0] == ":") {
+				var key = name.substr(1, name.length - 1);
+				var val = attrs[key];
+				if (!val) {
+					Ti.API.warn("resource url - found empty value:  " + key + "  " + basePath);
+				}
+				names[i] = val;
+			}
+		}
+		// build url
+		var s = names.join("/");
 		if (_id) {
 			s = s + "/" + _id;
 		}

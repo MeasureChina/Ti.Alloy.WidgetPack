@@ -3,6 +3,8 @@
 		<View id="container">
 			<Require id="input1" class="input" src="form/spinner" />
 			<Require id="input2" class="input" src="form/spinner" />
+			
+			<Require id="input3" src="form/text_picker" />
 		</View>
 	</Window>
 </Alloy>

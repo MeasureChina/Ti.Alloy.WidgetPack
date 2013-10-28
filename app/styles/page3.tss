@@ -7,3 +7,9 @@
 	width: 280,
 	height: 48,
 }
+"#input3": {
+	top: 20,
+	bottom: 20,
+	width: 280,
+	height: 96,
+}

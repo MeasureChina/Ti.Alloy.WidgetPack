@@ -1,0 +1,15 @@
+"#container" : {
+	borderWidth: 1,
+	borderColor: "#eee",
+	backgroundColor: "#fff",
+}
+"#valueLabel": {
+	left: 10,
+	right: 20,
+	top: 10,
+	bottom: 10,
+	font: { fontSize: 18 },
+	color: "#000",
+	wordWrap: true,
+	ellipsize: true,
+}

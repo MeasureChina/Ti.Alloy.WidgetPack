@@ -159,6 +159,7 @@ function Migrator(config, transactionDb) {
 //			path
 //			headers
 //			data		post data
+//			ssl
 //
 // callback	success
 //			code
@@ -186,6 +187,10 @@ function API(options, callback) {
 
 		// rest api host
 		var url = Alloy.Globals.host + options.path;
+		if (options.ssl) {
+			url = url.replace(/^http:\/\//, "https://");
+			xhr.validatesSecureCertificate = false;
+		}
 
 		xhr.open(options.method, url);
 
@@ -208,7 +213,7 @@ function API(options, callback) {
 				responseText: xhr.responseText || null,
 				responseJSON: responseJSON || null,
 			});
-        };
+		};
 		xhr.onerror = function() {
 			var responseJSON, error;
 			try {

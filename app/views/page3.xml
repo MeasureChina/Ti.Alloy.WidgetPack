@@ -1,7 +1,8 @@
 <Alloy>
 	<Window id="win" title="Three">
 		<View id="container">
-			<Label>Page 3</Label>
+			<Require id="input1" class="input" src="form/spinner" />
+			<Require id="input2" class="input" src="form/spinner" />
 		</View>
 	</Window>
 </Alloy>

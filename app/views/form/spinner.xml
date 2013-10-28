@@ -1,0 +1,5 @@
+<Alloy>
+	<View id="container" onSingletap="openPickerWindow">
+		<Label id="valueLabel" />
+	</View>
+</Alloy>

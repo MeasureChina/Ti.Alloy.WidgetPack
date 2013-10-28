@@ -15,3 +15,31 @@ $.win._options = {
 		},
 	],
 };
+
+
+$.input1.init({
+	items: [
+		["value A", "a"], 
+		["value B", "b"], 
+		["value C", "c"], 
+		["value D", "d"], 
+		["value E", "e"], 
+		["value F", "f"], 
+		["value G", "g"]
+	],
+	value: "b",
+});
+
+$.input2.init({
+	items: [
+		["Male", "male"], 
+		["Female", "female"], 
+		["Both", "both"]
+	],
+	value: "male",
+	pickerStyle: {
+		top: 48,
+		left: 64,
+		width: 140,
+	},
+});

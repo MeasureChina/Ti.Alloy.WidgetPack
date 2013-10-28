@@ -519,9 +519,8 @@ function Sync(method, model, opts) {
 	/*	dirty attributes processing
 	 */
 	function dirtyAttributes(m) {
-		console.log(JSON.stringify(opts));
-		// TODO: calc dirty attributes
-		return m.toJSON();
+		var ca = m.changedAttributes();// 변경된 attributes만 전송
+		return ca;
 	}
 
 	/*	SQL helpers

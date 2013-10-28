@@ -333,7 +333,7 @@ $G.openWindow = function(win, options) {
 		});
 		win._actionBar = actionBar;
 		
-		function onActionbarhome() {
+		function onActionbarhome(ev) {
 			if (options.onActionbarHome) {
 				options.onActionbarHome();
 			} else if (win.onActionbarHome) {
@@ -342,7 +342,7 @@ $G.openWindow = function(win, options) {
 				// default 동작은
 				// root window이고 global app이 존재할경우 menu toggle
 				// 그외의 경우는 그냥 창닫기
-				if (options.rootWindow && Alloy.Globals.app && Alloy.Globals.app.toggleLeftDrawer) {
+				if ((options.rootWindow || ev.root) && Alloy.Globals.app && Alloy.Globals.app.toggleLeftDrawer) {
 					Alloy.Globals.app.toggleLeftDrawer();
 				} else {
 					win.close();

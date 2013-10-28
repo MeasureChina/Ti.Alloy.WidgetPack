@@ -1,3 +1,4 @@
 <Alloy>
+	<Collection src="user" />
 	<Window id="win" exitOnClose="true" />
 </Alloy>

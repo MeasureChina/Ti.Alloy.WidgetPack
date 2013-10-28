@@ -325,10 +325,10 @@ $G.openWindow = function(win, options) {
 		// actionBar 추가
 		var actionBar = Alloy.createWidget("com.tripvi.actionBar");
 		actionBar.init(win, {
-			useDrawerMenu: true,
+			useDrawerMenu: false,// drawer가 아닌 새창으로 열리기떄문에
+			rootWindow: false,// drawer가 아닌 새창으로 열리기떄문에
 			tabs: options.tabs,
 			menu: options.menu,
-			rootWindow: options.rootWindow,
 			title: options.title,
 		});
 		win._actionBar = actionBar;

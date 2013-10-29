@@ -21,7 +21,7 @@ switch (mode) {
 	case "vagrantinoz":
 		// Alloy.Globals.host = "http://172.20.10.2:3000";
 		// Alloy.Globals.host = "http://10.1.2.15:3000";
-		Alloy.Globals.host = "http://192.168.1.2:3000";
+		Alloy.Globals.host = "http://192.168.1.12:3000";
 		break;
 	case "miriyas":
 		Alloy.Globals.host = "http://10.1.1.160:3000";

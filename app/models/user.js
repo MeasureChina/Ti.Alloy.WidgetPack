@@ -3,7 +3,7 @@ exports.definition = {
 		columns: {
 			"id": "integer",
 		    "name": "text",
-			"modified_at": "datetime",
+			"modified_at": "text",
 		},
 		adapter: {
 			type: "dual",

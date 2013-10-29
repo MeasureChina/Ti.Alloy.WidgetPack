@@ -11,19 +11,19 @@ $.win._options = {
 
 
 $.win.addEventListener("open", function() {
-	
+	Alloy.Collections.user.fetch();
 });
 
 function addItem(e) {
 	var random = Math.ceil(Math.random() * 25);
 	var model = Alloy.createModel('user', {
-		name: 'new user: ' + random,
+		name: 'create' + random,
 		modified_at: new Date(),
 	});
 
 	Alloy.Collections.user.add(model);
 	
-	model.stub = { id: random }; // for server-less test
+	// model.stub = { id: random }; // for server-less test
 	
 	model.save();
 }
@@ -41,7 +41,7 @@ function updateItem(e) {
 	if (_.isNumber(e.index)) {
 		var random = Math.ceil(Math.random() * 25);
 		var model = Alloy.Collections.user.at(e.index);
-		model.set({ name: 'old user: ' + random });
+		model.set({ name: 'update' + random });
 		
 		model.save();
 	}

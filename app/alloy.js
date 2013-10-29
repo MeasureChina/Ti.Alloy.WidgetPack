@@ -13,7 +13,7 @@ switch (mode) {
 		Alloy.Globals.host = "http://172.20.10.2:3000";
 		break;
 	case "metacortex":
-		Alloy.Globals.host = "http://10.1.2.231:3000";
+		Alloy.Globals.host = "http://192.168.1.15:3000";
 		break;
 	case "hiphapis":
 		Alloy.Globals.host = "http://10.1.1.161:3333";

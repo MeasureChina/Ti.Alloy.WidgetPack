@@ -241,14 +241,14 @@ function API(options, callback) {
 		}
 		// current language
 		xhr.setRequestHeader("X-Language", Ti.Locale.currentLanguage);
-		//
-		xhr.setRequestHeader("Content-Type","application/json; charset=utf-8");
+		// content type
+		xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		// custom
 		for (var header in options.headers) {
 			xhr.setRequestHeader(header, options.headers[header]);
 		}
 		
-		xhr.send(options.data ? JSON.stringify(options.data).replace(/\\/gi, "") : null);
+		xhr.send(JSON.stringify(options.data) || null);
     }
 	else {
 		// offline
@@ -519,8 +519,7 @@ function Sync(method, model, opts) {
 	function wrapWithNodeName(d) {
 		if (nodeName) {
 			var h = {};
-			h[nodeName] = JSON.stringify(_.clone(d));
-			// h = _.extend(h, _.clone(modelToParam()));
+			h[nodeName] = _.clone(d);
 			return h;
 		} else {
 			return d;
@@ -564,11 +563,10 @@ function Sync(method, model, opts) {
 		// build url
 		var s = names.join("/");
 		if (_id) {
-			s = s + "/" + _id + ".json";
+			s = s + "/" + _id;
 		}
-		else {
-			s = s + ".json"
-		}
+		// json format
+		s = s + ".json"
 		
 		if (modelParams) {
 			var actionName = modelParams.action || modelParams.action_name;

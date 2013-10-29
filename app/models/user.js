@@ -1,7 +1,7 @@
 exports.definition = {
 	config: {
 		columns: {
-			"id": "integer",
+			"id": "integer PRIMARY KEY AUTOINCREMENT",
 		    "name": "text",
 			"modified_at": "text",
 		},

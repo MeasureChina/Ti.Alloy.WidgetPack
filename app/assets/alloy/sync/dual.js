@@ -241,12 +241,14 @@ function API(options, callback) {
 		}
 		// current language
 		xhr.setRequestHeader("X-Language", Ti.Locale.currentLanguage);
+		//
+		xhr.setRequestHeader("Content-Type","application/json; charset=utf-8");
 		// custom
 		for (var header in options.headers) {
 			xhr.setRequestHeader(header, options.headers[header]);
 		}
 		
-		xhr.send(options.data || null);
+		xhr.send(options.data ? JSON.stringify(options.data).replace(/\\/gi, "") : null);
     }
 	else {
 		// offline
@@ -449,7 +451,7 @@ function Sync(method, model, opts) {
 						model.trigger("complete", { method: method });
 					}
 					else {
-						deleteSQL(); // TODO: transaction에 없었던 이유 알아보기
+						// deleteSQL();
 						_.isFunction(params.error) && params.error(response);
 						model.trigger("complete", { method: method, error: true });
 					}
@@ -507,7 +509,7 @@ function Sync(method, model, opts) {
 		for (var k in columns) {
 			_buildParam(resourceName, k, model.get(k));
 			if (changedAttributes[k] !== null && changedAttributes[k] !== undefined) { // 변경된 attributes만 전송
-				_buildParam(resourceName, k, d[k]);
+				_buildParam(resourceName, k, changedAttributes[k]);
 			}
 		}
 
@@ -517,8 +519,8 @@ function Sync(method, model, opts) {
 	function wrapWithNodeName(d) {
 		if (nodeName) {
 			var h = {};
-			// h[nodeName] = 
-			h = _.extend(h, modelToParam(_.clone(d)));
+			h[nodeName] = JSON.stringify(_.clone(d));
+			// h = _.extend(h, _.clone(modelToParam()));
 			return h;
 		} else {
 			return d;
@@ -622,10 +624,17 @@ function Sync(method, model, opts) {
 			//       https://tripvi.atlassian.net/browse/TC-10
 			//
 			var currentModels = sqlCurrentModels();
+			
+			console.log("currentModels >>> ");
+			console.log(currentModels);
+			// TODO: 받아온 data에 따라 local에 있는 데이터 삭제할지 결정하기
+			
 			for (var i in data) {
 				if (!_.isUndefined(data[i]["_destroy"])) {//delete item
 					deleteSQL(data[i][model.config.adapter.idAttribute]);
 				} else {
+					console.log("data[" + i + "]");
+					console.log(data[i]);
 					createOrUpdateSQL(data[i]);
 				}
 			}
@@ -727,14 +736,13 @@ function Sync(method, model, opts) {
 			len++;
 			rs.next();
 		}
-		
-		
+				
 		// close off db after read query
 		rs.close();
 		db.close();
 		
 		// shape response based on whether it's a model or collection
-		return _.isUndefined(model.length) ? values[0] : values;
+		return _.isUndefined(model.length) ? _.last(values) : values; // create시에 read할 경우 values의 마지막 요소가 create된 요소임 @vagrantinoz
 	}
 	
 	function deleteSQL(_id) {

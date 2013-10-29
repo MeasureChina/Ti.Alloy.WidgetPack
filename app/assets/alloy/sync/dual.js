@@ -322,14 +322,19 @@ function Sync(method, model, opts) {
 	
 	switch (method) {
 		case 'read':
-			console.log("read(GET) >> ");
 			// read는 index와 show가 함께 사용함. index는 Collection, show는 Model을 생성하는데
 			// model.id의 유무로 Collection인지 체크 가능
 			params.path = makeResourcePath(urlRoot, model.params, model.attributes, model.id);
 			
+			Ti.API.info("[GET]  " + params.path);
+			
 			// 먼저 sql에서 읽어들이고
 			if (useSQL) {
 				var data = readSQL();
+				if (DEBUG) {
+					Ti.API.info("readSQL() result:");
+					TRACE_JSON(data);
+				}
 				_.isFunction(params.success) && params.success(data);
 				model.trigger("fetch", { localData: true });
 			}
@@ -338,11 +343,20 @@ function Sync(method, model, opts) {
 			API(params, function(response) {
 				if (response.success) {
 					var resp = unwrapWithRootNode(response.responseJSON);
-					
+					if (DEBUG) {
+						Ti.API.info("API() response:");
+						TRACE_JSON(response.responseJSON);
+						Ti.API.info("unwrapWithRootNode() parsed data:");
+						TRACE_JSON(resp);
+					}
 					// 성공한경우 sql에 반영
 					if (useSQL) {
 						saveToSQL(resp);
 						var data = readSQL(); // sql과 merge된 데이터를 다시 로드함
+						if (DEBUG) {
+							Ti.API.info("merged data is:");
+							TRACE_JSON(data);
+						}
 						_.isFunction(params.success) && params.success(data);
 					} else {
 						_.isFunction(params.success) && params.success(resp);
@@ -351,6 +365,10 @@ function Sync(method, model, opts) {
 					model.trigger("complete", { method: method });
 				}
 				else {
+					Ti.API.error("request failed: " + response.code);
+					if (DEBUG) {
+						Ti.API.info(response.responseText);
+					}
 					_.isFunction(params.error) && params.error(response);
 					model.trigger("complete", { method: method, error: true });
 				}
@@ -358,19 +376,33 @@ function Sync(method, model, opts) {
 			break;
 			
 		case 'create':
-			console.log("create(POST) >> ");
 			params.path = makeResourcePath(urlRoot, model.params, model.attributes);
 			params.data = wrapWithNodeName(model.toJSON()); // create때는 모든 속성을 저장해야함
+			
+			Ti.API.info("[POST]  " + params.path);
+			if (DEBUG) {
+				Ti.API.info(JSON.stringify(params.data));
+			}
 			
 			// api 저장
 			API(params, function(response) {
 				if (response.success) {
 					var resp = unwrapWithRootNode(response.responseJSON);
+					if (DEBUG) {
+						Ti.API.info("API() response:");
+						TRACE_JSON(response.responseJSON);
+						Ti.API.info("unwrapWithRootNode() parsed data:");
+						TRACE_JSON(resp);
+					}
 					
 					// 성공한경우 sql에 반영
 					if (useSQL) {
 						saveToSQL(resp);
 						var data = readSQL(); // sql과 merge된 데이터를 다시 로드함
+						if (DEBUG) {
+							Ti.API.info("merged data is:");
+							TRACE_JSON(data);
+						}
 						_.isFunction(params.success) && params.success(data);
 					} else {
 						_.isFunction(params.success) && params.success(resp);
@@ -381,10 +413,19 @@ function Sync(method, model, opts) {
 					if (response.offline && syncMode == "active") {// active mode는 일단 sql에 저장하고 나중에 api로 sync한다.
 						saveToSQL(model.toJSON());
 						var data = readSQL(); // saveToSQL()에서 model.id를 저장해놓고 다시 로딩함
+						if (DEBUG) {
+							Ti.API.info("network is offline, but model was saved to sql anyway - active syncMode");
+							Ti.API.info("merged data is:");
+							TRACE_JSON(data);
+						}
 						_.isFunction(params.success) && params.success(data);
 						model.trigger("complete", { method: method });
 					}
 					else {
+						Ti.API.error("request failed: " + response.code);
+						if (DEBUG) {
+							Ti.API.info(response.responseText);
+						}
 						_.isFunction(params.error) && params.error(response);
 						model.trigger("complete", { method: method, error: true });
 					}
@@ -393,19 +434,33 @@ function Sync(method, model, opts) {
 			break;
 			
 		case 'update':
-			console.log("update(PUT) >> ");
 			params.path = makeResourcePath(urlRoot, model.params, model.attributes, model.id);
 			params.data = wrapWithNodeName(dirtyAttributes(model));
+
+			Ti.API.info("[PUT]  " + params.path);
+			if (DEBUG) {
+				Ti.API.info(JSON.stringify(params.data));
+			}
 			
 			// api 저장
 			API(params, function(response) {
 				if (response.success) {
 					var resp = unwrapWithRootNode(response.responseJSON);
+					if (DEBUG) {
+						Ti.API.info("API() response:");
+						TRACE_JSON(response.responseJSON);
+						Ti.API.info("unwrapWithRootNode() parsed data:");
+						TRACE_JSON(resp);
+					}
 					
 					// 성공한경우 sql에 반영
 					if (useSQL) {
 						saveToSQL(resp);
 						var data = readSQL(); // sql과 merge된 데이터를 다시 로드함
+						if (DEBUG) {
+							Ti.API.info("merged data is:");
+							TRACE_JSON(data);
+						}
 						_.isFunction(params.success) && params.success(data);
 					} else {
 						_.isFunction(params.success) && params.success(resp);
@@ -416,10 +471,19 @@ function Sync(method, model, opts) {
 					if (response.offline && syncMode == "active") {// active mode는 일단 sql에 저장하고 나중에 api로 sync한다.
 						saveToSQL(model.toJSON());
 						var data = readSQL(); // saveToSQL()에서 model.id를 저장해놓고 다시 로딩함
+						if (DEBUG) {
+							Ti.API.info("network is offline, but model was saved to sql anyway - active syncMode");
+							Ti.API.info("merged data is:");
+							TRACE_JSON(data);
+						}
 						_.isFunction(params.success) && params.success(data);
 						model.trigger("complete", { method: method });
 					}
 					else {
+						Ti.API.error("request failed: " + response.code);
+						if (DEBUG) {
+							Ti.API.info(response.responseText);
+						}
 						_.isFunction(params.error) && params.error(response);
 						model.trigger("complete", { method: method, error: true });
 					}
@@ -428,15 +492,23 @@ function Sync(method, model, opts) {
 			break;
 			
 		case 'delete':
-			console.log("delete(DELETE) >> ");
 			params.path = makeResourcePath(urlRoot, model.params, model.attributes, model.id);
+			
+			Ti.API.info("[DELETE]  " + params.path);
 			
 			// api 저장
 			API(params, function(response) {
 				if (response.success) {
+					if (DEBUG) {
+						Ti.API.info("API() response:");
+					}
+					
 					// 성공한경우 sql에 반영
 					if (useSQL) {
 						deleteSQL();
+						if (DEBUG) {
+							Ti.API.info("deleteSQL() called");
+						}
 					}
 					
 					model.id = null;
@@ -447,11 +519,18 @@ function Sync(method, model, opts) {
 					if (response.offline && syncMode == "active") {// active mode는 일단 sql에서 삭제하고 나중에 api로 sync한다.
 						deleteSQL();
 						model.id = null;
+						if (DEBUG) {
+							Ti.API.info("network is offline, but model was deleted from sql anyway - active syncMode");
+							Ti.API.info("deleteSQL() called");
+						}
 						_.isFunction(params.success) && params.success(model.toJSON());
 						model.trigger("complete", { method: method });
 					}
 					else {
-						// deleteSQL();
+						Ti.API.error("request failed: " + response.code);
+						if (DEBUG) {
+							Ti.API.info(response.responseText);
+						}
 						_.isFunction(params.error) && params.error(response);
 						model.trigger("complete", { method: method, error: true });
 					}
@@ -463,59 +542,6 @@ function Sync(method, model, opts) {
 	
 	/*	JSON wrapper (support rails jbuilder and controller params)
 	 */
-	function modelToParam(d) {
-		// 서버로 전송하는 모델 resource 이름
-		var resourceName = model.config.adapter.resource_name || urlRoot.slice(1, urlRoot.length - 1); // remove the last 's'
-		
-		var _pushData = function(fieldName, fieldValue) {
-			data[fieldName] = fieldValue;
-		}
-		var _buildParam = function(_parent, field, value) {
-			//
-			if (_.isString(value) || _.isNumber(value) || _.isBoolean(value) || _.isDate(value) || moment.isMoment(value) || (!_.isArray(value) && value == "[object TiBlob]")) {
-				// Array, Object가 아닌 경우.
-				if (moment.isMoment(value)) {
-					// moment(date)인 경우.
-					_pushData(_parent + "[" + field + "]", value.format());
-				} else {
-					_pushData(_parent + "[" + field + "]", value);
-				}
-			}
-			else if (_.isObject(value)) {
-				// Array(length == 0)인 경우.
-				value = (_.isArray(value) && (value.length == 0)) ? "" : value;
-						
-				// build recursively
-				_.each(value, function(v, k) {
-					// array인 경우. k가 index number가 들어간다.
-					// TODO: server에서 array도 hash로 받기때문에. key가 숫자인 hash. server에서 별도 처리가 필요함.
-					var parent = _parent + "[" + (field) + "]";
-					_buildParam(parent, k, v);
-				});
-			} else {
-				// ignore it
-			}
-		}
-
-		//
-		var data = {};
-		var changedAttributes = model.changedAttributes();
-	
-		if (model.isNew()) { // 새로 생성된 모델의 경우
-			changedAttributes = _.defaults(changedAttributes || {}, model.defaults || {}); // defaults 값 반영
-		}
-	
-		// attributes에 대해
-		for (var k in columns) {
-			_buildParam(resourceName, k, model.get(k));
-			if (changedAttributes[k] !== null && changedAttributes[k] !== undefined) { // 변경된 attributes만 전송
-				_buildParam(resourceName, k, changedAttributes[k]);
-			}
-		}
-
-		return data;
-	}
-	
 	function wrapWithNodeName(d) {
 		if (nodeName) {
 			var h = {};
@@ -533,7 +559,7 @@ function Sync(method, model, opts) {
 		} else if (!_.isUndefined(rootNode)) {
 			var nodes = rootNode.split(",");
 			for (var i=0; i < nodes.length; i++) {
-				if (data) {
+				if (data && data[nodes[i]]) {
 					data = data[nodes[i]];
 				} else {
 					// 파싱 에러 발생한 경우 원래 response를 그대로 리턴함
@@ -548,7 +574,7 @@ function Sync(method, model, opts) {
 	 */
 	function makeResourcePath(basePath, modelParams, attrs, _id) {
 		// replace resource_id
-		var names = basePath.split("/");
+		var names = basePath.split("/"), args = [];
 		for (var i=0; i < names.length; i++) {
 			var name = names[i];
 			if (name[0] == ":") {
@@ -560,28 +586,24 @@ function Sync(method, model, opts) {
 				names[i] = val;
 			}
 		}
-		// build url
-		var s = names.join("/");
+		// url components
 		if (_id) {
-			s = s + "/" + _id;
+			names.push(_id);
 		}
-		// json format
-		s = s + ".json"
-		
 		if (modelParams) {
 			var actionName = modelParams.action || modelParams.action_name;
 			if (actionName) {
-				s = s + "/" + actionName;
+				names.push(actionName);
 			}
-			var args = [];
-			_.each(_.omit(modelParams, actionName), function(v,k) {
+			_.each(_.omit(modelParams, actionName), function(v, k) {
 				if (!_.isEmpty(k)) { args.push(k + "=" + v); }
 			});
-			if (args.length > 0) {
-				s = s + "?" + args.join("&");
-			}
 		}
-		console.log("url ::: " + s);
+		// build
+		var s = names.join("/") + ".json";// use .json format
+		if (args.length > 0) {
+			s = s + "?" + args.join("&");
+		}
 		return s;
 	}
 
@@ -595,12 +617,14 @@ function Sync(method, model, opts) {
 	/*	SQL helpers
 	 */
 	function saveToSQL(data) {
+		if (DEBUG) {
+			Ti.API.info("saveToSQL()");
+		}
 		if (!data) {
 			Ti.API.error("saveToSQL: empty data");
 			return;
 		}
-
-		console.log("saveToSQL");
+		
 		if (!_.isArray(data)) {// model
 			if (!_.isUndefined(data["_destroy"])) {//delete item
 				return deleteSQL(data[model.config.adapter.idAttribute]);
@@ -622,26 +646,32 @@ function Sync(method, model, opts) {
 			//       https://tripvi.atlassian.net/browse/TC-10
 			//
 			var currentModels = sqlCurrentModels();
-			
-			console.log("currentModels >>> ");
-			console.log(currentModels);
-			// TODO: 받아온 data에 따라 local에 있는 데이터 삭제할지 결정하기
-			
+			var apiModels = [];
 			for (var i in data) {
 				if (!_.isUndefined(data[i]["_destroy"])) {//delete item
 					deleteSQL(data[i][model.config.adapter.idAttribute]);
 				} else {
-					console.log("data[" + i + "]");
-					console.log(data[i]);
 					createOrUpdateSQL(data[i]);
 				}
+				apiModels.push(data[i][model.config.adapter.idAttribute]);
 			}
+			var removeModels = _.difference(currentModels, apiModels);
+			if (DEBUG) {
+				Ti.API.info("saveToSQL() merge mode:  existing model ids " + currentModels);
+				Ti.API.info("                         fetched model ids  " + apiModels);
+				Ti.API.info("                         to be deleted ids  " + removeModels);
+			}
+			_.each(removeModels, function(_id) { deleteSQL(_id) });
+			
+			// RESTful 서버에서 create, update 등의 action에 대해 array response를 보내면 collection으로 인식해서 merge mode가 동작하게된다.
+			// 기존의 코드와 호환성이 없으므로 주의할것
 		}
 	}
 	
 	function createOrUpdateSQL(data) {
-		console.log("createOrUpdateSQL");
-		
+		if (DEBUG) {
+			Ti.API.info("createOrUpdateSQL()");
+		}
 		var attrObj = {};
 		if (!data.id) {// id가 없는경우
 			// alloy default id인 경우 random id를 새로 만든다. 아니면 AUTOINCREMENT 되도록 내버려둠
@@ -671,6 +701,11 @@ function Sync(method, model, opts) {
 		db.execute('BEGIN;');
 		db.execute(sql, values);
 		
+		if (DEBUG) {
+			Ti.API.info("  QUERY:  " + sql);
+			Ti.API.info("  PARAMS: " + values);
+		}
+		
 		// if model.id is still null, grab the last inserted id
 		if (data.id === null && !_.isNumber(model.length)) {// singular model인 경우에만
 			var sqlId = "SELECT last_insert_rowid();";
@@ -693,8 +728,9 @@ function Sync(method, model, opts) {
 	}
 	
 	function readSQL() {
-		console.log("readSQL");
-		
+		if (DEBUG) {
+			Ti.API.info("readSQL()");
+		}
 		if (opts.query && opts.id) {
 			Ti.API.warn('Both "query" and "id" options were specified for model.fetch(). "id" will be ignored.');
 		}
@@ -713,8 +749,16 @@ function Sync(method, model, opts) {
 		// is it a string or a prepared statement?
 		if (_.isString(sql)) {
 			rs = db.execute(sql);
+			if (DEBUG) {
+				Ti.API.info("  QUERY:  " + sql);
+			}
 		} else {
 			rs = db.execute(sql.statement, sql.params);
+			if (DEBUG) {
+				Ti.API.info("  sql is defined as object");
+				Ti.API.info("  QUERY:  " + sql.statement);
+				Ti.API.info("  PARAMS: " + sql.params);
+			}
 		}
 		var len = 0;
 		var values = [];
@@ -744,13 +788,18 @@ function Sync(method, model, opts) {
 	}
 	
 	function deleteSQL(_id) {
-		console.log("deleteSQL");
-		
+		if (DEBUG) {
+			Ti.API.info("deleteSQL()");
+		}
 		sql = 'DELETE FROM ' + table + ' WHERE ' + model.config.adapter.idAttribute + '=?';
 
 		// execute the delete
 		db = Ti.Database.open(dbName);
 		db.execute(sql, _id || model.id || opts.id);
+		if (DEBUG) {
+			Ti.API.info("  QUERY:  " + sql);
+			Ti.API.info("  PARAMS: " + _id || model.id || opts.id);
+		}
 		db.close();
 	}
 	
@@ -768,11 +817,18 @@ function Sync(method, model, opts) {
 	// 	return output;
 	// }
 	function sqlCurrentModels() {
+		if (DEBUG) {
+			Ti.API.info("sqlCurrentModels()");
+		}
 		// TODO: model.params을 처리하거나 최소한 where 조건절은 입력받아야함
 		//
 		var sql = 'SELECT ' + model.config.adapter.idAttribute + ' FROM ' + table;
+		
 		db = Ti.Database.open(dbName);
 		var rs = db.execute(sql);
+		if (DEBUG) {
+			Ti.API.info("  QUERY:  " + sql);
+		}
 		var output = [];
 		while (rs.isValidRow()) {
 			output.push(rs.fieldByName(model.config.adapter.idAttribute));
@@ -783,6 +839,17 @@ function Sync(method, model, opts) {
 		return output;
 	}
 	
+}
+
+function TRACE_JSON(data, printIndex) {
+	if (_.isArray(data)) {
+		for (var i in data) {
+			if (printIndex) Ti.API.info("  " + i + ":");
+			Ti.API.info("  " + JSON.stringify(data[i]));
+		}
+	} else {
+		Ti.API.info("  " + JSON.stringify(data));
+	}
 }
 
 

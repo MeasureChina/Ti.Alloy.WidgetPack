@@ -23,8 +23,6 @@ function addItem(e) {
 
 	Alloy.Collections.user.add(model);
 	
-	// model.stub = { id: random }; // for server-less test
-	
 	model.save();
 }
 
@@ -41,7 +39,7 @@ function updateItem(e) {
 	if (_.isNumber(e.index)) {
 		var random = Math.ceil(Math.random() * 25);
 		var model = Alloy.Collections.user.at(e.index);
-		model.set({ name: 'update' + random });
+		model.set({ name: 'update' + random }, { silent: true });
 		
 		model.save();
 	}

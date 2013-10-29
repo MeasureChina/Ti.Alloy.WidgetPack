@@ -159,6 +159,7 @@ function Migrator(config, transactionDb) {
 //			path
 //			headers
 //			data		post data
+//			ssl
 //
 // callback	success
 //			code
@@ -185,7 +186,12 @@ function API(options, callback) {
 		});
 
 		// rest api host
-		var url = Alloy.Globals.host + options.path;		
+		var url = Alloy.Globals.host + options.path;
+		if (options.ssl) {
+			url = url.replace(/^http:\/\//, "https://");
+			xhr.validatesSecureCertificate = false;
+		}
+
 		xhr.open(options.method, url);
 
 		xhr.onload = function() {
@@ -207,7 +213,7 @@ function API(options, callback) {
 				responseText: xhr.responseText || null,
 				responseJSON: responseJSON || null,
 			});
-        };
+		};
 		xhr.onerror = function() {
 			var responseJSON, error;
 			try {
@@ -582,9 +588,8 @@ function Sync(method, model, opts) {
 	/*	dirty attributes processing
 	 */
 	function dirtyAttributes(m) {
-		console.log(JSON.stringify(opts));
-		// TODO: calc dirty attributes
-		return m.toJSON();
+		var ca = m.changedAttributes();// 변경된 attributes만 전송
+		return ca;
 	}
 
 	/*	SQL helpers

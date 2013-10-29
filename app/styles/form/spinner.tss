@@ -1,0 +1,9 @@
+"#container" : {
+	borderWidth: 1,
+	borderColor: "#ddd",
+	backgroundColor: "#fff",
+}
+"#valueLabel": {
+	font: { fontSize: 18 },
+	color: "#000",
+}

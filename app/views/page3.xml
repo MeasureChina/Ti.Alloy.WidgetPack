@@ -1,7 +1,12 @@
 <Alloy>
 	<Window id="win" title="Three">
 		<View id="container">
-			<Label>Page 3</Label>
+			<Require id="input1" class="input" src="form/spinner" />
+			<Require id="input2" class="input" src="form/spinner" />
+			
+			<Require id="input3" src="form/text_picker" />
+			
+			<Button id="submit" title="Save" onClick="onSubmit"/>
 		</View>
 	</Window>
 </Alloy>

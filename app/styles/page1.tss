@@ -8,25 +8,31 @@
 	title: "popup",
 }
 "#button2": {
-	top: 25,
+	top: 15,
 	width: 260,
 	title: "indicator",
 }
 "#button3": {
-	top: 25,
+	top: 15,
 	width: 260,
 	title: "dialog",
 }
 
 "#button4": {
-	top: 100,
+	top: 80,
 	width: 260,
 	height: 48,
 	title: "Context Mode: Select",
 }
 "#button5": {
-	top: 25,
+	top: 15,
 	width: 260,
 	height: 48,
 	title: "Context Mode: Reorder",
+}
+"#button6": {
+	top: 15,
+	width: 260,
+	height: 48,
+	title: "Split Action Bar",
 }

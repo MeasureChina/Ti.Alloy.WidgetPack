@@ -1,0 +1,32 @@
+"#toolbar": {
+	width: Ti.UI.FILL,
+	height: "48",
+	bottom: 0,
+	backgroundColor: '#bbb',
+}
+"#leftView": {
+	left: 5,
+	width: Ti.UI.SIZE,
+	height: Ti.UI.FILL,
+	layout: "horizontal",
+}
+"#centerView": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.FILL,
+	layout: "horizontal",
+}
+"#rightView": {
+	right: 5,
+	width: Ti.UI.SIZE,
+	height: Ti.UI.FILL,
+	layout: "horizontal",
+}
+
+"#indicator": {
+	visible: false,
+}
+"#indicatorLabel": {
+	font: { fontSize: 16 },
+	color: "#333",
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+}

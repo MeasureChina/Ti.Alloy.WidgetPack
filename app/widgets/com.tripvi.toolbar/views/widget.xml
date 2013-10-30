@@ -1,0 +1,11 @@
+<Alloy>
+	<View id="toolbar">
+		<View id="leftView" />
+		<View id="centerView" />
+		<View id="rightView" />
+		
+		<View id="indicator">
+			<Label id="indicatorLabel" />
+		</View>
+	</View>
+</Alloy>

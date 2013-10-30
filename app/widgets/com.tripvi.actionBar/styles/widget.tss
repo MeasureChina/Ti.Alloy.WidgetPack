@@ -1,5 +1,5 @@
 "#widget": {
-	width: 320,
+	width: Ti.UI.FILL,
 	height: "48",
 	top: 0,
 	backgroundColor: '#9bc426',

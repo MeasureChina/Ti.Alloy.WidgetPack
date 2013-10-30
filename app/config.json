@@ -10,6 +10,7 @@
     "dependencies": {
         "com.tripvi.actionBar": "1.0",
         "com.tripvi.navigationDrawer": "1.0",
-        "com.tripvi.popup": "1.0"
+        "com.tripvi.popup": "1.0",
+        "com.tripvi.toolbar": "1.0"
     }
 }

@@ -415,16 +415,14 @@ exports.makeActionItems = function(items) {
 				win.removeEventListener('open', onOpenWindow);
 				win.removeEventListener('click', onClickWindow);
 				win.removeEventListener('close', onCloseWindow);
-				win.removeEventListener('click', onAndroidback);
+				win.removeEventListener('androidback', onAndroidback);
 				table.removeEventListener('click', onClickMoreItem);
 			}
 			function onAndroidback(ev) {
 				closeWindow();
 			}
 			function onClickWindow(ev) {
-				if (!ev.source.toString().match(/table/gi)) {
-					closeWindow();
-				}
+				closeWindow();
 			}
 			
 			win.addEventListener('open', onOpenWindow);
@@ -437,7 +435,6 @@ exports.makeActionItems = function(items) {
 				if (m && m.callback) {
 					m.callback();
 				}
-				closeWindow();
 			}
 			
 			table.addEventListener('click', onClickMoreItem);

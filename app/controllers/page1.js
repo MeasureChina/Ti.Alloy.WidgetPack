@@ -53,6 +53,20 @@ $.toolbar2.init({
 			callback: function() { $.toolbar2.openIndicator() },
 		}
 	],
+	overflowActions: [
+		{
+			title: "action 1",
+		},
+		{
+			title: "action 2",
+		},
+		{
+			title: "action 3",
+		},
+		{
+			title: "action 4",
+		}
+	],
 	visible: false,
 });
 

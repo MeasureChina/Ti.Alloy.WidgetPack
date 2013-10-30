@@ -330,9 +330,9 @@ exports.makeActionItems = function(items) {
 		});
 		
 		var buttonIcon = Ti.UI.createImageView({
-			width: 6,
-			height: 22,
-			image: WPATH('overflow.png'),
+			width: 32,
+			height: 32,
+			image: WPATH('ic_action_overflow.png'),
 		});
 		button.add(buttonIcon);
 		
@@ -484,6 +484,50 @@ exports.hideActionItems = function() {
 
 
 
+
+/** ACTION MODES
+ */
+
+exports.beginActionMode = function(options) {
+	if ($._inActionMode) {
+		exports.finishActionMode();
+	}
+
+	$.actionMode.show();
+	exports.setActionModeTitle(options);
+	
+	$._callbackFinishActionMode = options.onActionFinish;
+	$._inActionMode = true;
+}
+
+exports.finishActionMode = function() {
+	$.actionMode.hide();
+	_.isFunction($._callbackFinishActionMode) && $._callbackFinishActionMode();
+
+	$._inActionMode = false;
+}
+
+exports.setActionModeTitle = function(options) {
+	$.actionTitle.text = options.title || options.text;
+}
+
+function doClickActionDone(e) {
+	exports.finishActionMode();
+}
+
+exports.isInActionMode = function() {
+	return $._inActionMode;
+}
+
+exports.onAndroidback = function(e) {
+	if ($._inActionMode) {// androidback으로 actionMode 종료시킴
+		exports.finishActionMode();
+		return true;
+	}
+}
+
+
+
 /**
  *	UI EVENTS
  *
@@ -505,6 +549,7 @@ exports.release = function() {
 
 	//
 	$.home.removeEventListener('click', doClickHome);
+	$.actionIcon.removeEventListener('click', doClickActionDone);
 	$.destroy();
 
 	//

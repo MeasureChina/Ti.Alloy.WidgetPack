@@ -1,9 +1,12 @@
 <Alloy>
 	<Window id="win" title="One">
-		<View id="container">
+		<ScrollView id="container">
 			<Button id="button1" onClick="onClick1" />
 			<Button id="button2" onClick="onClick2" />
 			<Button id="button3" onClick="onClick3" />
-		</View>
+			
+			<Button id="button4" onClick="onClick4" />
+			<Button id="button5" onClick="onClick5" />
+		</ScrollView>
 	</Window>
 </Alloy>

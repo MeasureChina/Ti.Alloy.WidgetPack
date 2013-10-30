@@ -336,8 +336,8 @@ $G.openWindow = function(win, options) {
 		function onActionbarhome(ev) {
 			if (options.onActionbarHome) {
 				options.onActionbarHome();
-			} else if (win.onActionbarHome) {
-				win.onActionbarHome();
+			} else if (win._onActionbarHome) {
+				win._onActionbarHome();
 			} else {
 				// default 동작은
 				// root window이고 global app이 존재할경우 menu toggle
@@ -351,14 +351,24 @@ $G.openWindow = function(win, options) {
 		}
 		win.addEventListener('actionbarhome', onActionbarhome);
 
-		function onOpenWindow() {
+		function onOpenWindow(ev) {
 			// activity는 window가 open된 이후에 접근 가능함
 			// var activity = win.activity;
+			_.isFunction(win._onWindowOpen) && win._onWindowOpen(ev);
 		}
 		win.addEventListener('open', onOpenWindow);
+		
+		function onAndroidback(ev) {
+			if (_.isFunction(actionBar.onAndroidback) && actionBar.onAndroidback(ev)) return;
+			if (_.isFunction(win._onWindowOpen) && win._onWindowOpen(ev)) return;
+			win.close();
+		}
+		win.addEventListener('androidback', onAndroidback);
 
-		function onCloseWindow() {
+		function onCloseWindow(ev) {
 			Ti.API.info('[CLOSE WINDOW] closed > ' + win.title);
+			
+			_.isFunction(win._onWindowClose) && win._onWindowClose(ev);
 			
 			// release actionbar
 			if (win._actionBar) {
@@ -372,10 +382,14 @@ $G.openWindow = function(win, options) {
 				win._options.menu = undefined;
 				win._options = undefined;
 			}
-			win.onActionbarHome = undefined;
+			win._onActionbarHome = undefined;
+			win._onWindowOpen = undefined;
+			win._onWindowClose = undefined;
+			
 			options.onActionbarHome = undefined;
 			
 			win.removeEventListener('open', onOpenWindow);
+			win.removeEventListener('androidback', onAndroidback);
 			win.removeEventListener('actionbarhome', onActionbarhome);
 			win.removeEventListener('close', onCloseWindow);
 		}

@@ -120,7 +120,7 @@ actionBar.init($.win, {
 	rootWindow: true,
 	useDrawerMenu: true,
 });
-
+$.win._actionBar = actionBar;
 
 $.win.addEventListener("actionbarhome", function() {
 	drawer.toggleLeftDrawer();
@@ -128,19 +128,22 @@ $.win.addEventListener("actionbarhome", function() {
 
 
 function onOpenWindow(e) {
-	console.log("OPEN");
 	// default menu
 	drawer.openMenuByName('setting_about');
 }
 function onCloseWindow(e) {
-	
-	console.log("on close window");
-	
 	$.win.removeEventListener('androidback', onAndroidBack);
-	// $.win.removeEventListener('open', onOpenWindow);
-	// $.win.removeEventListener('close', onCloseWindow);
+	$.win.removeEventListener('open', onOpenWindow);
+	$.win.removeEventListener('close', onCloseWindow);
+
+	actionBar.release();
+	
+	Alloy.Globals.app = undefined;
+	Alloy.Globals.appWindow._actionBar = undefined;
+	Alloy.Globals.appWindow = undefined;
 }
 function onAndroidBack(e) {
+	if (_.isFunction(actionBar.onAndroidback) && actionBar.onAndroidback(e)) return;
 	$.win.close();
 }
 
@@ -150,3 +153,4 @@ $.win.addEventListener('close', onCloseWindow);
 
 
 Alloy.Globals.app = drawer;
+Alloy.Globals.appWindow = $.win;

@@ -51,3 +51,26 @@
 	height: Ti.UI.FILL,
 	layout: 'horizontal',
 }
+
+//
+"#actionMode": {
+	visible: false,
+	backgroundColor: "white",
+}
+"#actionDone": {
+	width: 32,
+	height: 32,
+	left: 12,
+	image: WPATH("ic_action_accept.png"),
+}
+"#actionTitle": {
+	left: 56,
+	right: 56,
+	font: { fontSize: 16 },
+	color: "#333",
+}
+"#actionBorder": {
+	bottom: 0,
+	height: "1",
+	backgroundColor: "#999",
+}

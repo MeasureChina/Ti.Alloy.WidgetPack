@@ -10,5 +10,10 @@
 		</View>
 		<View id="actionButtons" />
 		<!-- <View id="border" /> -->
+		<View id="actionMode">
+			<ImageView id="actionDone" onClick="doClickActionDone" />
+			<Label id="actionTitle" />
+			<View id="actionBorder" />
+		</View>
 	</View>
 </Alloy>

@@ -46,3 +46,21 @@ function onClick3(e) {
 	// 	
 	// });
 }
+
+
+function onClick4(e) {
+	var actionBar = $.win._actionBar || (Alloy.Globals.appWindow && Alloy.Globals.appWindow._actionBar);
+	if (actionBar) {
+		actionBar.beginActionMode({
+			title: "Select Mode",
+		});
+	}
+}
+function onClick5(e) {
+	var actionBar = $.win._actionBar || (Alloy.Globals.appWindow && Alloy.Globals.appWindow._actionBar);
+	if (actionBar) {
+		actionBar.beginActionMode({
+			title: "Reorder Mode",
+		});
+	}
+}

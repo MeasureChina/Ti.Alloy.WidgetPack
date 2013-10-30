@@ -1,16 +1,32 @@
 "#container" : {
-	
+	layout: "vertical",
 }
 
 "#button1": {
-	top: 150,
+	top: 25,
+	width: 260,
 	title: "popup",
 }
 "#button2": {
-	top: 250,
+	top: 25,
+	width: 260,
 	title: "indicator",
 }
 "#button3": {
-	top: 350,
+	top: 25,
+	width: 260,
 	title: "dialog",
+}
+
+"#button4": {
+	top: 100,
+	width: 260,
+	height: 48,
+	title: "Context Mode: Select",
+}
+"#button5": {
+	top: 25,
+	width: 260,
+	height: 48,
+	title: "Context Mode: Reorder",
 }
